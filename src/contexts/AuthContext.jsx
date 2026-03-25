@@ -7,43 +7,39 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // 🔁 persistência simples (sem /me)
   useEffect(() => {
     const token = localStorage.getItem("token");
     const userStorage = localStorage.getItem("user");
 
     if (token && userStorage) {
-      setUser(JSON.parse(userStorage));
+      try {
+        setUser(JSON.parse(userStorage));
+      } catch {
+        localStorage.removeItem("user");
+      }
     }
 
     setLoading(false);
   }, []);
 
-  // 🔐 LOGIN
   const login = async (email, password) => {
-    const res = await api.post("/auth/login", { email, password });
+    try {
+      const res = await api.post("/auth/login", { email, password });
 
-    const { accessToken, user } = res.data;
+      const { accessToken, user } = res.data;
 
-    localStorage.setItem("token", accessToken);
-    localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem("token", accessToken);
+      localStorage.setItem("user", JSON.stringify(user));
 
-    setUser(user);
+      setUser(user);
+    } catch (error) {
+      throw error;
+    }
   };
 
-  // 🚪 LOGOUT
-  const logout = async () => {
-    const refreshToken = localStorage.getItem("refreshToken");
-
-    try {
-      await api.post("/auth/logout", { refreshToken });
-    } catch (e) {
-      console.log("erro logout (ignorado)");
-    }
-
+  const logout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-    localStorage.removeItem("refreshToken");
 
     setUser(null);
   };
