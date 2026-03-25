@@ -17,8 +17,6 @@ export function AppRoutes() {
   return (
     <Routes>
 
-      {/* raiz */}
-      <Route path="/" element={<Navigate to="/" replace />} />
 
       {/* públicas */}
       <Route element={<PublicRoute />}>
