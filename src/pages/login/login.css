@@ -63,6 +63,7 @@
 .logo {
   width: 200px;
   margin: 0 auto 25px;
+  z-index: 3;
 }
 
 /* TEXTO */

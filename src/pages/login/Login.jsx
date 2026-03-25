@@ -1,16 +1,19 @@
-import { useState } from "react";
+import "./login.css";
+
+import { useState, useEffect } from "react";
 import { useAuth } from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+
+import { getConfig } from "../../services/configService";
 import ThemeToggle from "../../components/theme/ThemeToggle";
-import "./login.css";
-import Logo from "../../assets/logo/logo.png"
 import { Mail, Lock } from "lucide-react";
+import Logo from "../../assets/logo/logo.png"
+
 
 // 🔥 mock temporário (depois vem da API)
 
-
 const appConfig = {
-  name: "Estoque",
+  name: "Estoke",
   slogan: "Gestão inteligente de estoque",
 };
 
@@ -21,6 +24,21 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [config, setConfig] = useState(null);
+
+  useEffect(() => {
+    const fetchConfig = async () => {
+      try {
+        const data = await getConfig();
+        console.log("CONFIG:", data);
+        setConfig(data);
+      } catch (err) {
+        console.error("Erro ao buscar config", err);
+      }
+    };
+
+    fetchConfig();
+  }, []);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -47,22 +65,26 @@ export default function Login() {
         <ThemeToggle />
       </div>
 
-      <div className="login-title">
-        <img src={Logo} alt="logo" className="logo" />
-
-        
-      </div>
+      <img
+        src={
+          config?.logo_url
+            ? `${import.meta.env.VITE_API_URL}${config.logo_url}?t=${Date.now()}`
+            : Logo
+        }
+        alt="logo"
+        className="logo"
+      />
 
       {/* 🔥 conteúdo */}
       <div className="login-card">
 
-        {/* <img src={Logo} alt="logo" className="logo" />
-        <h1 className="app-name">{appConfig.name}</h1>
-        <p className="app-slogan">{appConfig.slogan}</p> */}
-        <h1 className="app-name">{appConfig.name}</h1>
-        <p className="app-slogan">{appConfig.slogan}</p>
+        <h1 className="app-name">
+          {config?.app_name || appConfig.name}
+        </h1>
 
-        {/* <h1 className="app-name-login">Login</h1> */}
+        <p className="app-slogan">
+          {config?.slogan || appConfig.slogan}
+        </p>
 
         <form onSubmit={handleLogin} className="form">
 
