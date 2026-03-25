@@ -1,12 +1,163 @@
+import { Link } from "react-router-dom";
+import {
+  Bell,
+  Settings,
+  LogOut,
+  Wallet,
+  Package,
+  Boxes,
+  Truck,
+  ClipboardList,
+  Store,
+  FileText,
+  BadgeDollarSign,
+  TriangleAlert,
+  Menu,
+  ShoppingCart,
+} from "lucide-react";
+import { useState } from "react";
+import "./painel.css";
+import Logo from "../../assets/logo/logo.png";
 
+const resumoCards = [
+  {
+    title: "Vendas do dia",
+    value: "R$ 3.254,00",
+    subtitle: "Hoje — 60 vendas",
+    icon: ShoppingCart,
+  },
+  {
+    title: "Total em caixa",
+    value: "R$ 3.254,00",
+    subtitle: "Atualizado agora",
+    icon: Wallet,
+  },
+];
+
+const atalhos = [
+  { title: "Caixa", icon: Wallet, to: "/caixa" },
+  { title: "Produtos", icon: Package, to: "/produtos" },
+  { title: "Estoque", icon: Boxes, to: "/estoque" },
+  { title: "Fornecedores", icon: Truck, to: "/fornecedores" },
+  { title: "Pedidos", icon: ClipboardList, to: "/pedidos" },
+  { title: "Lojas", icon: Store, to: "/lojas" },
+  { title: "Relatórios", icon: FileText, to: "/relatorios" },
+  { title: "Finanças", icon: BadgeDollarSign, to: "/financas" },
+  { title: "Perdas", icon: TriangleAlert, to: "/perdas" },
+  { title: "Configurações", icon: Settings, to: "/config" },
+];
+
+const alertas = [
+  { title: "Estoque mínimo", desc: "10 produtos" },
+  { title: "Notas pendentes", desc: "2 notas" },
+  { title: "Produtos vencendo", desc: "5 lotes (7 dias)" },
+  { title: "Transferências em aberto", desc: "3 solicitações" },
+  { title: "Inventário pendente", desc: "Rua A - Setor 2" },
+];
 
 export default function Painel() {
-
-
+  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <div>
-      Painel
+    <div className="painel-page">
+      <header className="painel-header">
+        <div className="painel-brand">
+          <img src={Logo} alt="Logo do sistema" className="painel-brand-logo" />
+          <div className="painel-brand-text">
+            <strong>Pastelaria do J</strong>
+            <span>Painel administrativo</span>
+          </div>
+        </div>
+
+        <div className="painel-header-actions">
+          <button
+            className="painel-menu-button"
+            onClick={() => setMenuOpen((prev) => !prev)}
+            type="button"
+            aria-label="Abrir menu"
+          >
+            <Menu size={20} />
+          </button>
+
+          {menuOpen && (
+            <div className="painel-dropdown">
+              <Link to="/notificacoes" className="painel-dropdown-item">
+                <Bell size={18} />
+                <span>Notificações</span>
+              </Link>
+
+              <Link to="/config" className="painel-dropdown-item">
+                <Settings size={18} />
+                <span>Configurações</span>
+              </Link>
+
+              <Link to="/logout" className="painel-dropdown-item danger">
+                <LogOut size={18} />
+                <span>Sair</span>
+              </Link>
+            </div>
+          )}
+        </div>
+      </header>
+
+      <main className="painel-content">
+        <section className="painel-hero">
+          <h1>Sistema de Gerenciamento</h1>
+          <p>Seja bem-vindo. Aqui você acompanha os principais atalhos e indicadores.</p>
+        </section>
+
+        <section className="painel-resumo-grid">
+          {resumoCards.map((card) => {
+            const Icon = card.icon;
+            return (
+              <article key={card.title} className="painel-resumo-card">
+                <div className="painel-card-top">
+                  <span>{card.title}</span>
+                  <Icon size={20} />
+                </div>
+
+                <strong>{card.value}</strong>
+                <p>{card.subtitle}</p>
+              </article>
+            );
+          })}
+        </section>
+
+        <section className="painel-atalhos">
+          {atalhos.map((item) => {
+            const Icon = item.icon;
+
+            return (
+              <Link key={item.title} to={item.to} className="painel-atalho-card">
+                <div className="painel-atalho-icon">
+                  <Icon size={26} />
+                </div>
+                <span>{item.title}</span>
+              </Link>
+            );
+          })}
+        </section>
+
+        <section className="painel-alertas-card">
+          <div className="painel-alertas-header">
+            <h2>Alertas</h2>
+            <span className="badge-alerta">{alertas.length}</span>
+          </div>
+
+          <div className="painel-alertas-list">
+            {alertas.map((alerta) => (
+              <div key={alerta.title} className="painel-alerta-item">
+                <strong>{alerta.title}</strong>
+                <span>{alerta.desc}</span>
+              </div>
+            ))}
+          </div>
+
+          <Link to="/alertas" className="painel-alertas-button">
+            Ver todos
+          </Link>
+        </section>
+      </main>
     </div>
   );
 }
