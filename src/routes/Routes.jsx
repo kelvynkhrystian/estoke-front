@@ -18,11 +18,11 @@ export function AppRoutes() {
     <Routes>
 
       {/* raiz */}
-      <Route path="/" element={<Navigate to="/login" replace />} />
+      <Route path="/" element={<Navigate to="/" replace />} />
 
       {/* públicas */}
       <Route element={<PublicRoute />}>
-        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<Login />} />
       </Route>
 
       {/* protegidas */}
