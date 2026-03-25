@@ -14,7 +14,21 @@ import Logo from "../../assets/logo/logo.png"
 
 const appConfig = {
   name: "Estoke",
-  slogan: "Gestão inteligente de estoque",
+  slogan: "Seu app de estoque",
+};
+
+// setar favicon
+const setFavicon = (url) => {
+  const existing = document.querySelector("link[rel~='icon']");
+
+  if (existing) {
+    existing.href = url;
+  } else {
+    const link = document.createElement("link");
+    link.rel = "icon";
+    link.href = url;
+    document.head.appendChild(link);
+  }
 };
 
 export default function Login() {
@@ -31,7 +45,19 @@ export default function Login() {
       try {
         const data = await getConfig();
         console.log("CONFIG:", data);
+
         setConfig(data);
+
+        // 🔥 TITLE DINÂMICO
+        if (data?.app_name) {
+          document.title = data.app_name;
+        }
+
+        if (data.logo_url) {
+          const faviconUrl = `${import.meta.env.VITE_API_URL}${data.logo_url}`;
+          setFavicon(faviconUrl);
+        }
+
       } catch (err) {
         console.error("Erro ao buscar config", err);
       }
@@ -39,6 +65,9 @@ export default function Login() {
 
     fetchConfig();
   }, []);
+
+
+  
 
   const handleLogin = async (e) => {
     e.preventDefault();
