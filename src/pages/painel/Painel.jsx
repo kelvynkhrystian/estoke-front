@@ -34,11 +34,9 @@ const atalhos = [
   { title: "Caixa", icon: Wallet, to: "/caixa" },
   { title: "Produtos", icon: Package, to: "/produtos" },
   { title: "Estoque", icon: Boxes, to: "/estoque" },
-  { title: "Fornecedores", icon: Truck, to: "/fornecedores" },
   { title: "Pedidos", icon: ClipboardList, to: "/pedidos" },
   { title: "Lojas", icon: Store, to: "/lojas" },
   { title: "Relatórios", icon: FileText, to: "/relatorios" },
-  { title: "Finanças", icon: BadgeDollarSign, to: "/financas" },
   { title: "Perdas", icon: TriangleAlert, to: "/perdas" },
   { title: "Configurações", icon: Settings, to: "/config" },
 ];
