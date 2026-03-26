@@ -1,12 +1,22 @@
+/* =========================
+   BASE
+========================= */
+
 .painel-page {
-  align-items: center;
   display: flex;
   flex-direction: column;
+  align-items: center;
   min-height: 100vh;
-  background: #f7f8f3;
-  color: #173b2f;
+
+  background: var(--bg);
+  color: var(--text);
+
   padding: 20px 16px 32px;
 }
+
+/* =========================
+   HEADER
+========================= */
 
 .painel-header {
   position: relative;
@@ -15,6 +25,8 @@
   justify-content: space-between;
   gap: 12px;
   margin-bottom: 24px;
+  width: 100%;
+  max-width: 900px;
 }
 
 .painel-brand {
@@ -29,7 +41,7 @@
   height: 48px;
   object-fit: contain;
   border-radius: 14px;
-  background: #fff;
+  background: var(--bg-secondary);
   padding: 4px;
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
 }
@@ -47,33 +59,46 @@
 
 .painel-brand-text span {
   font-size: 0.85rem;
-  color: #5e7468;
+  color: var(--text-muted);
 }
 
 .painel-header-actions {
   position: relative;
+  display: flex;
+  gap: 8px;
 }
 
-.painel-menu-button {
+.painel-menu-button,
+.theme-button {
   width: 42px;
   height: 42px;
-  border: 1px solid #d9e2d4;
-  background: #fff;
-  color: #173b2f;
+  border: 1px solid var(--border);
+  background: var(--bg-secondary);
+  color: var(--text);
   border-radius: 14px;
   display: grid;
   place-items: center;
   cursor: pointer;
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.06);
+  transition: 0.2s;
 }
+
+.painel-menu-button:hover,
+.theme-button:hover {
+  transform: translateY(-1px);
+}
+
+/* =========================
+   DROPDOWN
+========================= */
 
 .painel-dropdown {
   position: absolute;
   right: 0;
   top: calc(100% + 10px);
   width: 190px;
-  background: #fff;
-  border: 1px solid #e4eadf;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
   border-radius: 16px;
   box-shadow: 0 16px 30px rgba(0, 0, 0, 0.10);
   padding: 8px;
@@ -85,26 +110,35 @@
   align-items: center;
   gap: 10px;
   text-decoration: none;
-  color: #173b2f;
+  color: var(--text);
   padding: 10px 12px;
   border-radius: 12px;
   transition: 0.2s;
 }
 
 .painel-dropdown-item:hover {
-  background: #f6f8f3;
+  background: var(--bg);
 }
 
 .painel-dropdown-item.danger {
-  color: #a23131;
+  color: #ef4444;
 }
+
+/* =========================
+   CONTENT
+========================= */
 
 .painel-content {
   display: flex;
   flex-direction: column;
   gap: 22px;
-  width: 60%;
+  width: 100%;
+  max-width: 900px;
 }
+
+/* =========================
+   HERO
+========================= */
 
 .painel-hero h1 {
   font-size: 2rem;
@@ -114,9 +148,13 @@
 
 .painel-hero p {
   margin: 0;
-  color: #61786d;
+  color: var(--text-muted);
   font-size: 0.98rem;
 }
+
+/* =========================
+   RESUMO
+========================= */
 
 .painel-resumo-grid {
   display: grid;
@@ -125,8 +163,8 @@
 }
 
 .painel-resumo-card {
-  background: linear-gradient(180deg, #ffffff 0%, #f5f7f1 100%);
-  border: 1px solid #e0e9db;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
   border-radius: 20px;
   padding: 18px;
   box-shadow: 0 14px 30px rgba(0, 0, 0, 0.06);
@@ -155,6 +193,10 @@
   font-size: 0.9rem;
 }
 
+/* =========================
+   ATALHOS
+========================= */
+
 .painel-atalhos {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -163,9 +205,9 @@
 
 .painel-atalho-card {
   text-decoration: none;
-  color: #173b2f;
-  background: #fff;
-  border: 1px solid #e0e9db;
+  color: var(--text);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
   border-radius: 20px;
   min-height: 112px;
   padding: 14px 10px;
@@ -187,10 +229,10 @@
   width: 50px;
   height: 50px;
   border-radius: 16px;
-  background: #f3f7ef;
+  background: var(--bg);
   display: grid;
   place-items: center;
-  color: #2d5d49;
+  color: var(--primary);
 }
 
 .painel-atalho-card span {
@@ -198,9 +240,13 @@
   font-weight: 600;
 }
 
+/* =========================
+   ALERTAS
+========================= */
+
 .painel-alertas-card {
-  background: #fff;
-  border: 1px solid #e0e9db;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
   border-radius: 22px;
   padding: 18px;
   box-shadow: 0 14px 30px rgba(0, 0, 0, 0.06);
@@ -225,7 +271,7 @@
   border-radius: 999px;
   display: grid;
   place-items: center;
-  background: #ff0000;
+  background: var(--primary);
   color: #fff;
   font-weight: 700;
   font-size: 0.9rem;
@@ -238,7 +284,7 @@
 
 .painel-alerta-item {
   padding: 14px 0;
-  border-bottom: 1px solid #edf2e9;
+  border-bottom: 1px solid var(--border);
 }
 
 .painel-alerta-item:last-child {
@@ -252,7 +298,7 @@
 }
 
 .painel-alerta-item span {
-  color: #6e8579;
+  color: var(--text-muted);
   font-size: 0.93rem;
 }
 
@@ -265,62 +311,19 @@
   height: 46px;
   border-radius: 14px;
   text-decoration: none;
-  background: #f0c62f;
-  color: #173b2f;
-  font-weight: 700;
-}
-
-/* dark mode */
-
-.painel-page {
-  background: var(--bg);
-  color: var(--text);
-}
-
-.painel-resumo-card,
-.painel-alertas-card {
-  background: var(--bg-secondary);
-  border: 1px solid var(--border);
-}
-
-.painel-hero p,
-.painel-resumo-card p,
-.painel-alerta-item span {
-  color: var(--text-muted);
-}
-
-.painel-atalho-card {
-  background: var(--bg-secondary);
-  border: 1px solid var(--border);
-  color: var(--text);
-}
-
-.painel-atalho-icon {
-  background: var(--bg);
-  color: var(--primary);
-}
-
-.badge-alerta {
-  background: var(--primary);
-  color: white;
-}
-
-.painel-alertas-button {
   background: var(--accent);
   color: #000;
+  font-weight: 700;
+  transition: 0.2s;
 }
 
 .painel-alertas-button:hover {
   background: var(--accent-hover);
 }
 
-.painel-alerta-item {
-  border-bottom: 1px solid var(--border);
-}
-
-
-
-/* mobile */
+/* =========================
+   MOBILE
+========================= */
 
 @media (max-width: 768px) {
   .painel-hero h1 {
@@ -328,32 +331,10 @@
   }
 
   .painel-resumo-grid {
-    display: flex;
-    flex-direction: row;
-  }
-
-  .painel-resumo-card {
-    width: 50%;
-  }
-
-  .painel-resumo-card strong {
-    font-size: 1.5rem;
+    grid-template-columns: 1fr;
   }
 
   .painel-atalhos {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-  }
-
-  .painel-atalho-card {
-    width: 30%;
-  }
-
-  .painel-content {
-    display: flex;
-    flex-direction: column;
-    gap: 22px;
-    width: 100%;
+    grid-template-columns: repeat(2, 1fr);
   }
 }
