@@ -13,6 +13,7 @@
   --accent: #ffd43b;        /* amarelo */
   --accent-hover: #fcc419;
 
+  --dark: #2b8a3e;;
   --border: #d3e9d7;
 
   --btn: #1b4332;
@@ -36,6 +37,7 @@
   --border: #27272a;
 
   --btn: #0f0f1a;              /* feito para login */
+  --dark: #6c5ce7;
 }
 
 
