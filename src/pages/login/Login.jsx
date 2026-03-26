@@ -48,16 +48,6 @@ export default function Login() {
 
         setConfig(data);
 
-        // 🔥 TITLE DINÂMICO
-        if (data?.app_name) {
-          document.title = data.app_name;
-        }
-
-        if (data.logo_url) {
-          const faviconUrl = `${import.meta.env.VITE_API_URL}${data.logo_url}`;
-          setFavicon(faviconUrl);
-        }
-
       } catch (err) {
         console.error("Erro ao buscar config", err);
       }
