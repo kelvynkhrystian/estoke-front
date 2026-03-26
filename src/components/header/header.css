@@ -99,3 +99,40 @@
   cursor: pointer;
   margin-right: 8px;
 }
+
+.menu-button,
+.theme-button {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+
+.app-logo {
+  background: var(--bg-secondary);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+}
+
+.app-info strong {
+  color: var(--text);
+}
+
+.app-info span {
+  color: var(--text-muted);
+}
+
+.dropdown {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+}
+
+.dropdown-item {
+  color: var(--text);
+}
+
+.dropdown-item:hover {
+  background: var(--bg);
+}
+
+.dropdown-item.danger {
+  color: #ef4444;
+}

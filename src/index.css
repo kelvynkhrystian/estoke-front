@@ -1,12 +1,14 @@
 :root {
   --bg: #f8fff9; /* fundo geral (leve verde claro) */
   --bg-secondary: #ffffff;
+  --bg3: #cdf1d3; /* fundo geral (leve verde claro) */
 
   --text: #1b4332;
   --text-muted: #52796f;
 
   --primary: #2f9e44;       /* verde */
   --primary-hover: #2b8a3e;
+  --primary2: #2f9e44;       /* verde 2 */
 
   --accent: #ffd43b;        /* amarelo */
   --accent-hover: #fcc419;
@@ -19,12 +21,14 @@
 [data-theme="dark"] {
   --bg: #0f0f1a;
   --bg-secondary: #1a1a2e;
+  --bg3: #0f0f1a; /* fundo geral (leve verde claro) */
 
   --text: #ffffff;
   --text-muted: #a1a1aa;
 
   --primary: #22c55e;       /* verde mais vivo no dark */
   --primary-hover: #16a34a;
+  --primary2: #ffffff;       /* verde 2 */
 
   --accent: #ffd43b;        /* mantém amarelo */
   --accent-hover: #fcc419;
@@ -34,18 +38,6 @@
   --btn: #0f0f1a;              /* feito para login */
 }
 
-/* [data-theme="dark"] {
-  --bg: #0f0f1a;
-  --bg-secondary: #1a1a2e;
-
-  --text: #ffffff;
-  --text-muted: #a1a1aa;
-
-  --primary: #7c3aed;
-  --primary-hover: #6d28d9;
-
-  --border: #27272a;
-} */
 
 body {
   background-color: var(--bg);

@@ -136,9 +136,13 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  color: #5d7567;
+  color: var(--text-muted);
   font-size: 0.92rem;
   margin-bottom: 14px;
+}
+
+.painel-card-top svg{
+  color: var(--text-muted);
 }
 
 .painel-resumo-card strong {
@@ -146,12 +150,12 @@
   font-size: 1.75rem;
   line-height: 1.1;
   margin-bottom: 6px;
-  color: #173b2f;
+  color: var(--text);
 }
 
 .painel-resumo-card p {
   margin: 0;
-  color: #768d81;
+  color: var(--text-muted);;
   font-size: 0.9rem;
 }
 
@@ -269,6 +273,58 @@
   color: #173b2f;
   font-weight: 700;
 }
+
+/* dark mode */
+
+.painel-page {
+  background: var(--bg);
+  color: var(--text);
+}
+
+.painel-resumo-card,
+.painel-alertas-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+}
+
+.painel-hero p,
+.painel-resumo-card p,
+.painel-alerta-item span {
+  color: var(--text-muted);
+}
+
+.painel-atalho-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+
+.painel-atalho-icon {
+  background: var(--bg3);
+  color: var(--primary2);
+}
+
+.badge-alerta {
+  background: var(--primary);
+  color: white;
+}
+
+.painel-alertas-button {
+  background: var(--accent);
+  color: #000;
+}
+
+.painel-alertas-button:hover {
+  background: var(--accent-hover);
+}
+
+.painel-alerta-item {
+  border-bottom: 1px solid var(--border);
+}
+
+
+
+/* mobile */
 
 @media (max-width: 768px) {
   .painel-hero h1 {
