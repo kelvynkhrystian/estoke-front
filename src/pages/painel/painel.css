@@ -255,27 +255,36 @@
 
 .painel-alertas-header {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  margin-bottom: 14px;
+  align-items: center;
+
+  padding: 12px 16px;
+  margin: -20px -20px 16px -20px; /* cola no topo do card */
+
+  border-radius: 16px 16px 0 0;
+
+  background: var(--primary);
+  color: #fff;
 }
 
-.painel-alertas-header h2 {
-  margin: 0;
-  font-size: 1.3rem;
+.painel-alertas-header {
+  background: var(--dark);
+}
+
+.alertas-title h2 {
+  font-size: 16px;
+  font-weight: 600;
 }
 
 .badge-alerta {
-  min-width: 32px;
-  height: 32px;
-  padding: 0 10px;
+  background: var(--accent);
+  color: #000;
+
+  font-size: 12px;
+  font-weight: bold;
+
+  padding: 2px 8px;
   border-radius: 999px;
-  display: grid;
-  place-items: center;
-  background: var(--dark);
-  color: #fff;
-  font-weight: 700;
-  font-size: 0.9rem;
 }
 
 .painel-alertas-list {
@@ -320,6 +329,12 @@
 
 .painel-alertas-button:hover {
   background: var(--accent-hover);
+}
+
+.alertas-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 /* =========================

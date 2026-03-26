@@ -4,11 +4,10 @@ import {
   Wallet,
   Package,
   Boxes,
-  Truck,
+  Bell,
   ClipboardList,
   Store,
   FileText,
-  BadgeDollarSign,
   TriangleAlert,
   ShoppingCart,
 } from "lucide-react";
@@ -93,10 +92,20 @@ export default function Painel() {
           })}
         </section>
 
+
+
         <section className="painel-alertas-card">
+
+          {/* HEADER NOVO */}
           <div className="painel-alertas-header">
-            <h2>Alertas</h2>
-            <span className="badge-alerta">{alertas.length}</span>
+            <div className="alertas-title">
+              <h2>Alertas</h2>
+            </div>
+
+            <div className="alertas-actions">
+              <Bell size={18} />
+              <span className="badge-alerta">{alertas.length}</span>
+            </div>
           </div>
 
           <div className="painel-alertas-list">
