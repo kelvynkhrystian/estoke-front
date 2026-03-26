@@ -1,4 +1,7 @@
 .painel-page {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
   min-height: 100vh;
   background: #f7f8f3;
   color: #173b2f;
@@ -100,6 +103,7 @@
   display: flex;
   flex-direction: column;
   gap: 22px;
+  width: 60%;
 }
 
 .painel-hero h1 {
@@ -266,7 +270,7 @@
   font-weight: 700;
 }
 
-@media (max-width: 520px) {
+@media (max-width: 768px) {
   .painel-hero h1 {
     font-size: 1.7rem;
   }
@@ -292,5 +296,12 @@
 
   .painel-atalho-card {
     width: 30%;
+  }
+
+  .painel-content {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    width: 100%;
   }
 }

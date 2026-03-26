@@ -1,8 +1,6 @@
 import { Link } from "react-router-dom";
 import {
-  Bell,
   Settings,
-  LogOut,
   Wallet,
   Package,
   Boxes,
@@ -12,12 +10,10 @@ import {
   FileText,
   BadgeDollarSign,
   TriangleAlert,
-  Menu,
   ShoppingCart,
 } from "lucide-react";
 import { useState } from "react";
 import "./painel.css";
-import Logo from "../../assets/logo/logo.png";
 
 const resumoCards = [
   {
@@ -60,45 +56,6 @@ export default function Painel() {
 
   return (
     <div className="painel-page">
-      <header className="painel-header">
-        <div className="painel-brand">
-          <img src={Logo} alt="Logo do sistema" className="painel-brand-logo" />
-          <div className="painel-brand-text">
-            <strong>Pastelaria do J</strong>
-            <span>Painel administrativo</span>
-          </div>
-        </div>
-
-        <div className="painel-header-actions">
-          <button
-            className="painel-menu-button"
-            onClick={() => setMenuOpen((prev) => !prev)}
-            type="button"
-            aria-label="Abrir menu"
-          >
-            <Menu size={20} />
-          </button>
-
-          {menuOpen && (
-            <div className="painel-dropdown">
-              <Link to="/notificacoes" className="painel-dropdown-item">
-                <Bell size={18} />
-                <span>Notificações</span>
-              </Link>
-
-              <Link to="/config" className="painel-dropdown-item">
-                <Settings size={18} />
-                <span>Configurações</span>
-              </Link>
-
-              <Link to="/logout" className="painel-dropdown-item danger">
-                <LogOut size={18} />
-                <span>Sair</span>
-              </Link>
-            </div>
-          )}
-        </div>
-      </header>
 
       <main className="painel-content">
         <section className="painel-hero">
