@@ -9,7 +9,10 @@ export default function App() {
       <div className="app-background" />
 
       {/* resto do app */}
-      <AppRoutes />
+      <div style={{ position: "relative", zIndex: 1 }}>
+        <AppRoutes />
+      </div>
+      
     </>
   );
 }
