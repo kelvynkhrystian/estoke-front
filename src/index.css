@@ -46,3 +46,48 @@ body {
   color: var(--text);
   transition: 0.3s;
 }
+
+
+/* 🔥 BACKGROUND GLOBAL DO APP */
+.app-background {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+
+  background-image: url("/src/assets/backgrounds/fundo2.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  opacity: 0.6;
+}
+
+.app-background::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0.4);
+}
+
+/* 🌙 DARK MODE */
+[data-theme="dark"] .app-background {
+  background-image: none;
+
+  background: linear-gradient(
+    180deg,
+    #0f0f1a 0%,
+    #1a1a2e 40%,
+    #16213e 100%
+  );
+}
+
+[data-theme="dark"] .app-background::after {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+/* 📱 MOBILE */
+@media (max-width: 768px) {
+  .app-background {
+    background-image: url("/src/assets/backgrounds/fundo1.png");
+  }
+}

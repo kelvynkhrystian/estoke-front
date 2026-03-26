@@ -4,7 +4,12 @@ import './index.css';
 import './App.css';
 
 export default function App() {
+  return (
+    <>
+      <div className="app-background" />
 
-  return <AppRoutes />;
+      {/* resto do app */}
+      <AppRoutes />
+    </>
+  );
 }
-
