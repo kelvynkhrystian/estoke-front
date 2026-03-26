@@ -141,10 +141,6 @@
   margin-bottom: 14px;
 }
 
-.painel-card-top svg{
-  color: var(--text-muted);
-}
-
 .painel-resumo-card strong {
   display: block;
   font-size: 1.75rem;
@@ -155,7 +151,7 @@
 
 .painel-resumo-card p {
   margin: 0;
-  color: var(--text-muted);;
+  color: var(--text-muted);
   font-size: 0.9rem;
 }
 
@@ -300,8 +296,8 @@
 }
 
 .painel-atalho-icon {
-  background: var(--bg3);
-  color: var(--primary2);
+  background: var(--bg);
+  color: var(--primary);
 }
 
 .badge-alerta {
