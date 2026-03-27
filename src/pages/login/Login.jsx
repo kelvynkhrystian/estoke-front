@@ -44,7 +44,7 @@ export default function Login() {
     const fetchConfig = async () => {
       try {
         const data = await getConfig();
-        console.log("CONFIG:", data);
+        // console.log("CONFIG:", data);
 
         setConfig(data);
 
