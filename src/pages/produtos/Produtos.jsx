@@ -145,6 +145,29 @@ export default function Produtos() {
     }
   };
 
+  const handleDeleteProduct = async (id) => {
+  if (!confirm("Deseja realmente excluir este item?")) return;
+
+  try {
+    const token = localStorage.getItem("token");
+    const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
+
+    const response = await fetch(`${API_URL}/products/${id}`, {
+      method: "DELETE",
+      headers: { "Authorization": `Bearer ${token}` }
+    });
+
+    if (response.ok) {
+      toast.success("Item excluído com sucesso!");
+      fetchData(); // Recarrega a lista
+    } else {
+      toast.error("Erro ao excluir o item.");
+    }
+  } catch (error) {
+    toast.error("Erro de conexão ao excluir.");
+  }
+};
+
 
 
 
@@ -179,7 +202,8 @@ export default function Produtos() {
                   <th>ID</th>
                   <th>Nome</th>
                   <th>Preço</th>
-                  <th>Estoque mínimo</th>
+                  <th>Qtd. Min</th>
+                  <th style={{ textAlign: 'center' }}>Ações</th>
                 </tr>
               </thead>
 
@@ -198,6 +222,17 @@ export default function Produtos() {
                       R$ {p.sale_price ? Number(p.sale_price).toFixed(2) : "0.00"}
                     </td>
                     <td>{p.min_stock}</td>
+                    <td style={{ textAlign: 'center' }}>
+                      <button 
+                        className="btn-icon-delete" 
+                        onClick={(e) => {
+                          e.stopPropagation(); // Evita abrir o edit ao clicar na lixeira
+                          handleDeleteProduct(p.id);
+                        }}
+                      >
+                        <Trash2 size={18} color="#ff4d4d" />
+                      </button>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -221,7 +256,8 @@ export default function Produtos() {
                   <th>ID</th>
                   <th>Nome</th>
                   <th>Unidade</th>
-                  <th>Estoque mínimo</th>
+                  <th>Qtd. Min</th>
+                  <th style={{ textAlign: 'center' }}>Ações</th>
                 </tr>
               </thead>
 
@@ -238,6 +274,17 @@ export default function Produtos() {
                     <td>{p.name}</td>
                     <td>{p.unit}</td>
                     <td>{p.min_stock}</td>
+                    <td style={{ textAlign: 'center' }}>
+                      <button 
+                        className="btn-icon-delete" 
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDeleteProduct(p.id);
+                        }}
+                      >
+                        <Trash2 size={18} color="#ff4d4d" />
+                      </button>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -299,6 +346,7 @@ export default function Produtos() {
           open={openAddProduct}
           onClose={() => setOpenAddProduct(false)}
           categories={categories}
+          onRefresh={fetchData} 
         />
 
         <EditProduct
@@ -306,6 +354,7 @@ export default function Produtos() {
           onClose={() => setOpenEditProduct(false)}
           product={selectedProduct}
           categories={categories}
+          onRefresh={fetchData} 
         />
 
         {/* MODAIS CATEGORIA */}
