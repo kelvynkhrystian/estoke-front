@@ -1,11 +1,12 @@
-import { useState } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { X, Save } from "lucide-react";
 import toast from "react-hot-toast";
 import "./modals.css";
 
-export default function AddProduct({ open, onClose, categories, onRefresh }) {
+export default function AddProduct({ open, onClose, categories, onRefresh, type }) {
   const [loading, setLoading] = useState(false);
-  const [form, setForm] = useState({
+  
+  const initialForm = {
     name: "",
     sku: "",
     unit: "und",
@@ -15,7 +16,24 @@ export default function AddProduct({ open, onClose, categories, onRefresh }) {
     min_stock: "",
     category_id: "",
     is_active: 1,
-  });
+  };
+
+  const [form, setForm] = useState(initialForm);
+
+  // 1. FILTRO DE CATEGORIAS: Separa o que é insumo do que é produto
+  const filteredCategories = useMemo(() => {
+    return categories.filter(cat => {
+      const isIns = cat.name.toLowerCase().includes("insumo");
+      return type === "insumo" ? isIns : !isIns;
+    });
+  }, [categories, type]);
+
+  // 2. AUTO-SELEÇÃO: Se houver apenas uma categoria disponível no filtro, já seleciona ela
+  useEffect(() => {
+    if (open && filteredCategories.length === 1) {
+      setForm(prev => ({ ...prev, category_id: filteredCategories[0].id }));
+    }
+  }, [open, filteredCategories]);
 
   if (!open) return null;
 
@@ -28,17 +46,19 @@ export default function AddProduct({ open, onClose, categories, onRefresh }) {
   };
 
   const handleSave = async () => {
-    // 🔥 Validações reais
+    // Validações
     if (!form.name.trim()) {
-      toast.error("Nome do produto é obrigatório");
+      toast.error(`Nome do ${type} é obrigatório`);
       return;
     }
     if (!form.category_id) {
       toast.error("Selecione uma categoria");
       return;
     }
-    if (!form.sale_price) {
-      toast.error("Preço de venda é obrigatório");
+    
+    // Se for PRODUTO, o preço de venda é essencial. Se for INSUMO, pode ser opcional.
+    if (type === "produto" && !form.sale_price) {
+      toast.error("Preço de venda é obrigatório para produtos");
       return;
     }
 
@@ -55,35 +75,23 @@ export default function AddProduct({ open, onClose, categories, onRefresh }) {
         },
         body: JSON.stringify({
           ...form,
-          // Garante que números vazios sejam enviados como null ou 0 para não quebrar a API
-          cost_price: form.cost_price || 0,
-          sale_price: form.sale_price || 0,
-          resale_price: form.resale_price || 0,
-          min_stock: form.min_stock || 0,
+          // Sanitização de números para a API
+          cost_price: parseFloat(form.cost_price) || 0,
+          sale_price: parseFloat(form.sale_price) || 0,
+          resale_price: parseFloat(form.resale_price) || 0,
+          min_stock: parseFloat(form.min_stock) || 0,
+          type: type // Enviando o tipo para o backend se necessário
         }),
       });
 
       if (response.ok) {
-        toast.success("Produto adicionado com sucesso!");
-        
-        // Reset do formulário
-        setForm({
-          name: "",
-          sku: "",
-          unit: "und",
-          cost_price: "",
-          sale_price: "",
-          resale_price: "",
-          min_stock: "",
-          category_id: "",
-          is_active: 1,
-        });
-
-        onRefresh(); // 🔥 Atualiza a lista na tela principal
-        onClose();   // Fecha o modal
+        toast.success(`${type === "insumo" ? "Insumo" : "Produto"} adicionado!`);
+        setForm(initialForm); // Reset completo
+        onRefresh(); 
+        onClose();
       } else {
         const errorData = await response.json();
-        throw new Error(errorData.message || "Erro ao salvar produto");
+        throw new Error(errorData.message || "Erro ao salvar");
       }
     } catch (error) {
       toast.error("Erro: " + error.message);
@@ -95,32 +103,29 @@ export default function AddProduct({ open, onClose, categories, onRefresh }) {
   return (
     <div className="modal-overlay">
       <div className="modal-box glass">
-        {/* HEADER */}
+        {/* HEADER DINÂMICO */}
         <div className="modal-header">
           <div>
-            <h2>Novo Produto / Insumo</h2>
-            <p className="modal-subtitle">Preencha as informações do item</p>
+            <h2>Novo {type === "insumo" ? "Insumo" : "Produto"}</h2>
+            <p className="modal-subtitle">Preencha os dados de {type === "insumo" ? "insumo" : "venda"}</p>
           </div>
           <button onClick={onClose} className="modal-close">
             <X size={18} />
           </button>
         </div>
 
-        {/* FORM */}
         <div className="modal-form">
-          {/* NOME */}
           <div className="form-group">
-            <label>Nome do Produto</label>
+            <label>Nome do {type === "insumo" ? "Insumo" : "Produto"}</label>
             <input
               name="name"
               value={form.name}
               onChange={handleChange}
-              placeholder="Ex: Pastel de Carne Especial"
+              placeholder={type === "insumo" ? "Ex: Farinha de Trigo" : "Ex: Pastel de Carne"}
               autoFocus
             />
           </div>
 
-          {/* SKU + UNIDADE */}
           <div className="form-row">
             <div className="form-group">
               <label>Código / SKU</label>
@@ -128,7 +133,7 @@ export default function AddProduct({ open, onClose, categories, onRefresh }) {
                 name="sku"
                 value={form.sku}
                 onChange={handleChange}
-                placeholder="Ex: PST001"
+                placeholder="Ex: SKU001"
               />
             </div>
 
@@ -144,7 +149,6 @@ export default function AddProduct({ open, onClose, categories, onRefresh }) {
             </div>
           </div>
 
-          {/* FINANCEIRO 1: CUSTO + QTD MIN */}
           <div className="form-row">
             <div className="form-group">
               <label>Preço de Custo</label>
@@ -158,18 +162,18 @@ export default function AddProduct({ open, onClose, categories, onRefresh }) {
             </div>
 
             <div className="form-group">
-              <label>Qtd. Mínima (Estoque)</label>
+              <label>Qtd. Mínima</label>
               <input
                 name="min_stock"
                 type="number"
                 value={form.min_stock}
                 onChange={handleChange}
-                placeholder="Ex: 10"
+                placeholder="Aviso de reposição"
               />
             </div>
           </div>
 
-          {/* FINANCEIRO 2: VENDA + REVENDA */}
+          {/* SÓ MOSTRA PREÇO DE VENDA SE NÃO FOR INSUMO PURO (OPCIONAL) */}
           <div className="form-row">
             <div className="form-group">
               <label>Preço de Venda</label>
@@ -194,36 +198,32 @@ export default function AddProduct({ open, onClose, categories, onRefresh }) {
             </div>
           </div>
 
-          {/* CATEGORIA */}
-          <div className="form-row">
-            <div className="form-group categorias-box-add-product">
-              <label>Categoria</label>
-              <select
-                name="category_id"
-                value={form.category_id}
-                onChange={handleChange}
-              >
-                <option value="">Selecione uma categoria</option>
-                {categories.map((c) => (
-                  <option key={c.id} value={c.id}>
-                    {c.name}
-                  </option>
-                ))}
-              </select>
-            </div>
+          <div className="form-group">
+            <label>Categoria</label>
+            <select
+              name="category_id"
+              value={form.category_id}
+              onChange={handleChange}
+            >
+              <option value="">Selecione a categoria de {type}</option>
+              {filteredCategories.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.name}
+                </option>
+              ))}
+            </select>
           </div>
 
-          {/* FOOTER COM STATUS E BOTÃO */}
           <div className="modal-footer">
             <div className="status-container">
-              <label>Status do Produto</label>
+              <label>Status</label>
               <button
                 type="button"
                 onClick={toggleActive}
                 className={`status-toggle ${form.is_active ? "active" : "inactive"}`}
               >
                 <div className="dot"></div>
-                {form.is_active ? "Ativo no Sistema" : "Inativo / Oculto"}
+                {form.is_active ? "Ativo" : "Inativo"}
               </button>
             </div>
 
@@ -233,7 +233,7 @@ export default function AddProduct({ open, onClose, categories, onRefresh }) {
               disabled={loading}
             >
               <Save size={18} /> 
-              {loading ? "Salvando..." : "Criar Produto"}
+              {loading ? "Salvando..." : `Criar ${type === "insumo" ? "Insumo" : "Produto"}`}
             </button>
           </div>
         </div>

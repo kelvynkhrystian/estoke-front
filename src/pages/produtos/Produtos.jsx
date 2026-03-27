@@ -36,6 +36,8 @@ export default function Produtos() {
   const [openEditCategory, setOpenEditCategory] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
 
+  const [modalType, setModalType] = useState("produto"); // "produto" ou "insumo"
+
   // ============================
   // 🔥 FETCH REAL
   // ============================
@@ -191,7 +193,10 @@ export default function Produtos() {
           <>
             <button
               className="btn-primary"
-              onClick={() => setOpenAddProduct(true)}
+              onClick={() => {
+                setModalType("produto");
+                setOpenAddProduct(true);
+              }}
             >
               + Novo Produto
             </button>
@@ -245,7 +250,10 @@ export default function Produtos() {
           <>
             <button
               className="btn-primary"
-              onClick={() => setOpenAddProduct(true)}
+              onClick={() => {
+                setModalType("insumo");
+                setOpenAddProduct(true);
+              }}
             >
               + Novo Insumo
             </button>
@@ -347,6 +355,7 @@ export default function Produtos() {
           onClose={() => setOpenAddProduct(false)}
           categories={categories}
           onRefresh={fetchData} 
+          type={modalType}     
         />
 
         <EditProduct
