@@ -1,23 +1,22 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import "./produtos.css";
-import { Trash2 } from "lucide-react"; // Adicione este ícone
-import toast from "react-hot-toast"; // Para avisar que excluiu
+import { Trash2 } from "lucide-react";
+import toast from "react-hot-toast";
 
-
+// Componentes de Layout
 import HeaderProdutos from "../../components/produtos/HeaderProdutos";
 import TabsProdutos from "../../components/produtos/TabsProdutos";
 import SubTabsProdutos from "../../components/produtos/SubTabsProdutos";
 
-// modais
+// Modais - Padronizando nomes para evitar erro de "not defined"
 import AddProduct from "./modais/addProduct";
 import EditProduct from "./modais/editProduct";
 import AddCategorie from "./modais/addCategorie";
-import EditCategorie from "./modais/editCategorie";
+import EditCategory from "./modais/editCategorie"; // 🔥 Importado como EditCategory para combinar com o return
 
-
-// 🔥 REGRA CENTRAL
+// 🔥 REGRA CENTRAL: Proteção contra erro se category for undefined ou nulo
 const isInsumoCategory = (category) => {
-  return category.name.toLowerCase().includes("insumo");
+  return category?.name?.toLowerCase().includes("insumo") || false;
 };
 
 export default function Produtos() {
@@ -28,6 +27,7 @@ export default function Produtos() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // Estados dos Modais
   const [openAddProduct, setOpenAddProduct] = useState(false);
   const [openEditProduct, setOpenEditProduct] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -36,61 +36,51 @@ export default function Produtos() {
   const [openEditCategory, setOpenEditCategory] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
 
-  const [modalType, setModalType] = useState("produto"); // "produto" ou "insumo"
+  const [modalType, setModalType] = useState("produto");
+
+  // Configuração da API
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
   // ============================
-  // 🔥 FETCH REAL
+  // 🔥 FETCH DATA (Envolvido em useCallback para estabilidade)
   // ============================
-  const API_URL = import.meta.env.VITE_API_URL;
+  const fetchData = useCallback(async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        toast.error("Sessão expirada. Faça login novamente.");
+        return;
+      }
+
+      const headers = { Authorization: `Bearer ${token}` };
+
+      const [catRes, prodRes] = await Promise.all([
+        fetch(`${API_URL}/categories`, { headers }),
+        fetch(`${API_URL}/products`, { headers }),
+      ]);
+
+      if (!catRes.ok || !prodRes.ok) throw new Error("Erro na API");
+
+      const cats = await catRes.json();
+      const prods = await prodRes.json();
+
+      setCategories(Array.isArray(cats) ? cats : []);
+      setProducts(Array.isArray(prods) ? prods : []);
+    } catch (err) {
+      console.error("Erro ao carregar dados:", err);
+      toast.error("Erro ao carregar dados do servidor.");
+    } finally {
+      setLoading(false);
+    }
+  }, [API_URL]);
 
   useEffect(() => {
-    
-
     fetchData();
-  }, []);
-
-  const fetchData = async () => {
-      try {
-        const token = localStorage.getItem("token");
-
-        const [catRes, prodRes] = await Promise.all([
-          fetch(`${API_URL}/categories`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }),
-          fetch(`${API_URL}/products`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }),
-        ]);
-
-        // 🔥 valida resposta
-        if (!catRes.ok || !prodRes.ok) {
-          throw new Error("Erro ao buscar dados da API");
-        }
-
-        const cats = await catRes.json();
-        const prods = await prodRes.json();
-
-        // 🔥 garante array (evita crash no filter)
-        setCategories(Array.isArray(cats) ? cats : []);
-        setProducts(Array.isArray(prods) ? prods : []);
-
-      } catch (err) {
-        console.error("Erro ao carregar dados:", err);
-        setCategories([]);
-        setProducts([]);
-      } finally {
-        setLoading(false);
-      }
-    };
+  }, [fetchData]);
 
   // ============================
-  // 🔥 FILTROS
+  // 🔥 FILTROS (useMemo evita cálculos desnecessários)
   // ============================
-
   const produtos = useMemo(() => {
     return products.filter((p) => {
       const cat = categories.find((c) => c.id === p.category_id);
@@ -110,17 +100,8 @@ export default function Produtos() {
   };
 
   // ============================
-  // LOADING
+  // 🔥 FUNÇÕES DE EXCLUSÃO
   // ============================
-
-  if (loading) {
-    return <div className="products-page">Carregando...</div>;
-  }
-
-  // ============================
-  // outros
-  // ============================
-
   const handleDeleteCategory = async (id) => {
     if (!confirm("Tem certeza que deseja excluir esta categoria?")) return;
 
@@ -128,56 +109,52 @@ export default function Produtos() {
       const token = localStorage.getItem("token");
       const response = await fetch(`${API_URL}/categories/${id}`, {
         method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       if (response.ok) {
-        toast.success("Categoria excluída com sucesso!");
-        // Atualiza a lista localmente removendo a categoria deletada
-        setCategories(categories.filter((cat) => cat.id !== id));
+        toast.success("Categoria excluída!");
+        fetchData();
       } else {
         const errorData = await response.json();
-        toast.error(errorData.message || "Erro ao excluir categoria.");
+        toast.error(errorData.message || "Erro ao excluir. Verifique dependências.");
       }
     } catch (err) {
-      console.error(err);
-      toast.error("Erro de conexão ao excluir.");
+      toast.error("Erro de conexão.");
     }
   };
 
   const handleDeleteProduct = async (id) => {
-  if (!confirm("Deseja realmente excluir este item?")) return;
+    if (!confirm("Deseja realmente excluir este item?")) return;
 
-  try {
-    const token = localStorage.getItem("token");
-    const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`${API_URL}/products/${id}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` }
+      });
 
-    const response = await fetch(`${API_URL}/products/${id}`, {
-      method: "DELETE",
-      headers: { "Authorization": `Bearer ${token}` }
-    });
-
-    if (response.ok) {
-      toast.success("Item excluído com sucesso!");
-      fetchData(); // Recarrega a lista
-    } else {
-      toast.error("Erro ao excluir o item.");
+      if (response.ok) {
+        toast.success("Item excluído!");
+        fetchData();
+      } else {
+        toast.error("Erro ao excluir o item.");
+      }
+    } catch (error) {
+      toast.error("Erro de conexão.");
     }
-  } catch (error) {
-    toast.error("Erro de conexão ao excluir.");
+  };
+
+  if (loading) {
+    return (
+      <div className="products-page loading-container">
+        <p>Carregando catálogo...</p>
+      </div>
+    );
   }
-};
-
-
-
-
-
 
   return (
     <div className="products-page">
-
       <HeaderProdutos />
 
       <TabsProdutos tab={tab} setTab={setTab} />
@@ -187,8 +164,7 @@ export default function Produtos() {
       )}
 
       <div className="products-content">
-
-        {/* PRODUTOS */}
+        {/* SEÇÃO: PRODUTOS */}
         {tab === "itens" && subTab === "produtos" && (
           <>
             <button
@@ -211,12 +187,12 @@ export default function Produtos() {
                   <th style={{ textAlign: 'center' }}>Ações</th>
                 </tr>
               </thead>
-
               <tbody>
                 {produtos.map((p) => (
                   <tr
                     key={p.id}
                     onDoubleClick={() => {
+                      setModalType("produto");
                       setSelectedProduct(p);
                       setOpenEditProduct(true);
                     }}
@@ -231,7 +207,7 @@ export default function Produtos() {
                       <button 
                         className="btn-icon-delete" 
                         onClick={(e) => {
-                          e.stopPropagation(); // Evita abrir o edit ao clicar na lixeira
+                          e.stopPropagation();
                           handleDeleteProduct(p.id);
                         }}
                       >
@@ -245,7 +221,7 @@ export default function Produtos() {
           </>
         )}
 
-        {/* INSUMOS */}
+        {/* SEÇÃO: INSUMOS */}
         {tab === "itens" && subTab === "insumos" && (
           <>
             <button
@@ -268,19 +244,19 @@ export default function Produtos() {
                   <th style={{ textAlign: 'center' }}>Ações</th>
                 </tr>
               </thead>
-
               <tbody>
                 {insumos.map((p) => (
                   <tr
                     key={p.id}
                     onDoubleClick={() => {
-                      setSelectedProduct({ ...p, type: "insumo" });
-                      setOpenEditProduct(true);
+                      setModalType("insumo"); 
+                      setSelectedProduct(p);    
+                      setOpenEditProduct(true); 
                     }}
                   >
                     <td>{p.id}</td>
                     <td>{p.name}</td>
-                    <td>{p.unit}</td>
+                    <td>{p.unit || "N/A"}</td>
                     <td>{p.min_stock}</td>
                     <td style={{ textAlign: 'center' }}>
                       <button 
@@ -300,56 +276,62 @@ export default function Produtos() {
           </>
         )}
 
-        {/* CATEGORIAS */}
+        {/* SEÇÃO: CATEGORIAS */}
         {tab === "categorias" && (
-            <>
-              <button
-                className="btn-primary"
-                onClick={() => setOpenAddCategory(true)}
-              >
-                + Nova Categoria
-              </button>
+          <>
+            <button
+              className="btn-primary"
+              onClick={() => setOpenAddCategory(true)}
+            >
+              + Nova Categoria
+            </button>
 
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th>ID</th>
-                    <th>Nome</th>
-                    <th>Status</th>
-                    <th>Produtos</th>
-                    <th style={{ textAlign: "right" }}>Ações</th>
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Nome</th>
+                  <th>Status</th>
+                  <th>Produtos</th>
+                  <th style={{ textAlign: "right" }}>Ações</th>
+                </tr>
+              </thead>
+              <tbody>
+                {categories.map((cat) => (
+                  <tr
+                    key={cat.id}
+                    onDoubleClick={() => {
+                      setSelectedCategory(cat); // Corrigido: era (c)
+                      setOpenEditCategory(true);
+                    }}
+                  >
+                    <td>{cat.id}</td>
+                    <td>{cat.name}</td>
+                    <td>
+                      <span className={`status ${cat.is_active ? "active" : "inactive"}`}>
+                        {cat.is_active ? "Ativo" : "Inativo"}
+                      </span>
+                    </td>
+                    <td>{getTotalByCategory(cat.id)}</td>
+                    <td style={{ textAlign: "right" }}>
+                      <button 
+                        className="btn-delete" 
+                        onClick={() => handleDeleteCategory(cat.id)}
+                        style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}
+                      >
+                        <Trash2 size={18} color="#ff4d4d" />
+                      </button>
+                    </td>
                   </tr>
-                </thead>
-
-                <tbody>
-                  {categories.map((cat) => (
-                    <tr key={cat.id}>
-                      <td>{cat.id}</td>
-                      <td>{cat.name}</td>
-                      <td>
-                        <span className={`status ${cat.is_active ? "active" : "inactive"}`}>
-                          {cat.is_active ? "Ativo" : "Inativo"}
-                        </span>
-                      </td>
-                      <td>{getTotalByCategory(cat.id)}</td>
-                      {/* Coluna com o Botão de Excluir */}
-                      <td style={{ textAlign: "right" }}>
-                        <button 
-                          className="btn-delete" 
-                          onClick={() => handleDeleteCategory(cat.id)}
-                          style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}
-                        >
-                          <Trash2 size={18} color="#ff4d4d" />
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </>
+                ))}
+              </tbody>
+            </table>
+          </>
         )}
 
-        {/* MODAIS PRODUTO */}
+        {/* --- MODAIS --- */}
+        
+        {/* Modal de Adicionar Produto/Insumo */}
         <AddProduct
           open={openAddProduct}
           onClose={() => setOpenAddProduct(false)}
@@ -358,22 +340,25 @@ export default function Produtos() {
           type={modalType}     
         />
 
+        {/* Modal de Editar Produto/Insumo */}
         <EditProduct
           open={openEditProduct}
           onClose={() => setOpenEditProduct(false)}
           product={selectedProduct}
           categories={categories}
-          onRefresh={fetchData} 
+          onRefresh={fetchData}
+          type={modalType} 
         />
 
-        {/* MODAIS CATEGORIA */}
+        {/* Modal de Adicionar Categoria */}
         <AddCategorie
           open={openAddCategory}
           onClose={() => setOpenAddCategory(false)}
           onRefresh={fetchData}
         />
 
-        <EditCategorie
+        {/* Modal de Editar Categoria */}
+        <EditCategory
           open={openEditCategory}
           onClose={() => setOpenEditCategory(false)}
           category={selectedCategory}
