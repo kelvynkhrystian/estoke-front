@@ -1,17 +1,11 @@
-.modal-box {
-  /* background-color: #0c0c1a; */
-  padding: 20px;
-  border-radius: 10px;
-  width: 90%;
-}
-
 /* =========================
-   OVERLAY (FUNDO)
+   OVERLAY
 ========================= */
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.6);
+
+  background: rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(4px);
 
   display: flex;
@@ -22,19 +16,31 @@
 }
 
 /* =========================
-   CONTAINER
+   MODAL BOX (CLARO PADRÃO)
 ========================= */
-.modal-container {
-  width: 100%;
+.modal-box {
+  width: 90%;
   max-width: 420px;
 
-  background: linear-gradient(180deg, #1b1b2f, #141427);
-  border-radius: 16px;
+  background: var(--bg-secondary); /* branco */
+  border: 1px solid var(--border);
+  border-radius: 18px;
 
   padding: 20px;
 
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+  color: var(--text);
+
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+
   animation: modalFade 0.2s ease;
+}
+
+/* DARK */
+[data-theme="dark"] .modal-box {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
 }
 
 /* =========================
@@ -45,25 +51,24 @@
   justify-content: space-between;
   align-items: center;
 
-  margin-bottom: 15px;
+  margin-bottom: 25px;
 }
 
-.modal-title {
+.modal-header h2 {
   font-size: 20px;
-  font-weight: 600;
-  color: #fff;
+  font-weight: 800;
+  color: var(--text);
 }
 
-.modal-close {
+.modal-header button {
   background: none;
   border: none;
   cursor: pointer;
-  color: #aaa;
-  transition: 0.2s;
+  color: var(--text-muted);
 }
 
-.modal-close:hover {
-  color: #fff;
+.modal-header button:hover {
+  color: var(--text);
 }
 
 /* =========================
@@ -72,129 +77,20 @@
 .modal-form {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-}
-
-/* INPUT */
-.modal-form input,
-.modal-form select {
-  background: #0f0f1f;
-  border: 1px solid #2a2a40;
-  border-radius: 8px;
-
-  padding: 10px;
-  color: #fff;
-  font-size: 14px;
-
-  outline: none;
-  transition: 0.2s;
-}
-
-.modal-form input:focus,
-.modal-form select:focus {
-  border-color: #7c5cff;
-  box-shadow: 0 0 0 2px rgba(124, 92, 255, 0.2);
-}
-
-/* =========================
-   STATUS
-========================= */
-.modal-status {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  color: #ccc;
-}
-
-.status-badge {
-  padding: 4px 10px;
-  border-radius: 999px;
-  font-size: 12px;
-  font-weight: 600;
-}
-
-.status-active {
-  background: #1f8f4d;
-  color: #fff;
-}
-
-.status-inactive {
-  background: #8f1f1f;
-  color: #fff;
-}
-
-/* =========================
-   FOOTER
-========================= */
-.modal-footer {
-  margin-top: 15px;
-  display: flex;
-  justify-content: flex-end;
-}
-
-/* BOTÃO */
-.modal-button {
-  background: linear-gradient(90deg, #7c5cff, #5a3df0);
-  border: none;
-  border-radius: 10px;
-
-  padding: 10px 16px;
-  color: #fff;
-  font-weight: 600;
-
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.modal-button:hover {
-  transform: scale(1.05);
-  opacity: 0.95;
-}
-
-/* =========================
-   ANIMAÇÃO
-========================= */
-@keyframes modalFade {
-  from {
-    opacity: 0;
-    transform: translateY(10px) scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-/* =========================
-   CLOSE BUTTON
-========================= */
-.modal-close {
-  background: transparent;
-  border: none;
-  color: #aaa;
-  cursor: pointer;
-}
-
-/* =========================
-   FORM WRAPPER
-========================= */
-.modal-form {
-  display: flex;
-  flex-direction: column;
   gap: 12px;
 }
 
 /* =========================
-   GRID
+   GRID (LINHAS)
 ========================= */
-.form-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+.form-row {
+  display: flex;
+  flex-direction: row;
   gap: 10px;
 }
 
-@media (max-width: 500px) {
-  .form-grid {
+@media (max-width: 768) {
+  .form-row {
     grid-template-columns: 1fr;
   }
 }
@@ -202,42 +98,40 @@
 /* =========================
    INPUTS
 ========================= */
-.modal-form input {
+.modal-form input,
+.modal-form select {
   width: 100%;
   padding: 12px;
 
-  background: #0c0c1a;
-  border: 1px solid #2a2a40;
-  border-radius: 10px;
+  border-radius: 12px;
 
-  color: #fff;
+  border: 1px solid var(--border);
+  background: var(--bg);
+
+  color: var(--text);
   font-size: 14px;
 
-  transition: all 0.2s ease;
+  transition: 0.25s;
 }
 
 .modal-form input::placeholder {
-  color: #777;
+  color: var(--text-muted);
 }
 
-.modal-form input:focus {
-  border-color: #7c5cff;
-  box-shadow: 0 0 0 2px rgba(124, 92, 255, 0.25);
-  background: #0f0f22;
+/* hover */
+.modal-form input:hover,
+.modal-form select:hover {
+  border-color: var(--dark);
 }
 
-/* =========================
-   SELECT
-========================= */
-.modal-select {
-  width: 100%;
-  padding: 12px;
+/* focus */
+.modal-form input:focus,
+.modal-form select:focus {
+  border-color: var(--dark);
 
-  background: #0c0c1a;
-  border: 1px solid #2a2a40;
-  border-radius: 10px;
+  box-shadow: 0 0 0 2px rgba(47, 158, 68, 0.15);
 
-  color: #fff;
+  outline: none;
 }
 
 /* =========================
@@ -247,36 +141,51 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  color: #bbb;
+  margin-bottom: 25px;
+  font-size: 14px;
+  color: var(--text-muted);
 }
 
 .status-toggle {
   border: none;
-  padding: 6px 12px;
-  border-radius: 8px;
-  color: #fff;
-  cursor: pointer;
+  padding: 6px 14px;
+
+  border-radius: 999px;
+
   font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+  transition: 0.2s;
 }
 
+/* ativo */
 .status-toggle.active {
-  background: #22c55e;
+  background: rgba(47, 158, 68, 0.15);
+  color: var(--primary);
+  border: 1px solid var(--primary);
 }
 
+/* inativo */
 .status-toggle.inactive {
-  background: #ef4444;
+  background: rgba(220, 38, 38, 0.15);
+  color: #dc2626;
+  border: 1px solid #dc2626;
 }
 
 /* =========================
-   BUTTON
+   BOTÃO PRINCIPAL
 ========================= */
 .modal-button {
-  background: linear-gradient(90deg, #7c5cff, #5a3df0);
+  width: 100%;
+
+  background: var(--dark);
   border: none;
-  border-radius: 12px;
+  border-radius: 14px;
 
   padding: 12px;
-  color: #fff;
+
+  color: var(--primary-contrast);
   font-weight: 600;
 
   display: flex;
@@ -285,10 +194,72 @@
   gap: 8px;
 
   cursor: pointer;
+  transition: 0.25s;
+}
+
+/* hover */
+.modal-button:hover {
+  background: var(--primary-hover);
+  transform: translateY(-1px);
+}
+
+/* =========================
+   BOTÃO SECUNDÁRIO (CATEGORIA)
+========================= */
+.modal-inline-button {
+  align-items: center;
+  background: var(--dark);
+  border: none;
+  border-radius: 12px;
+  display: flex;
+  padding: 10px 14px;
+  justify-content: center;
+  color: #fff;
+  font-weight: 500;
+  cursor: pointer;
   transition: 0.2s;
 }
 
-.modal-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(124, 92, 255, 0.3);
+.modal-inline-button svg{
+  margin-right: 10px;
 }
+
+
+
+/* =========================
+   ANIMAÇÃO
+========================= */
+@keyframes modalFade {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+
+label {
+  margin-left: 5px;
+  font-weight: 500;
+}
+
+.status-container {
+  margin-bottom: 25px;
+  margin-top: 10px;
+}
+
+.status-container button{
+  margin-left: 10px;
+}
+
+
+
+@media (max-width: 768px) {
+  .categorias-box-add-product {
+    width: 100%;
+  }
+}
+

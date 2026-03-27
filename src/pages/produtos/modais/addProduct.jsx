@@ -64,11 +64,13 @@ export default function AddProduct({ open, onClose, categories }) {
 
   return (
     <div className="modal-overlay">
-      <div className="modal-box">
-
+      <div className="modal-box glass">
         {/* HEADER */}
         <div className="modal-header">
-          <h2>Novo Produto</h2>
+          <div>
+            <h2>Novo Produto</h2>
+            <p className="modal-subtitle">Preencha as informações básicas do item</p>
+          </div>
           <button onClick={onClose} className="modal-close">
             <X size={18} />
           </button>
@@ -76,85 +78,135 @@ export default function AddProduct({ open, onClose, categories }) {
 
         {/* FORM */}
         <div className="modal-form">
-
-          <div className="form-grid">
-
+          
+          {/* NOME */}
+          <div className="form-group">
+            <label>Nome do Produto</label>
             <input
               name="name"
               value={form.name}
               onChange={handleChange}
-              placeholder="Nome do produto"
+              placeholder="Ex: Pastel de Carne Especial"
             />
-
-            <input
-              name="sku"
-              value={form.sku}
-              onChange={handleChange}
-              placeholder="SKU (ex: PST001)"
-            />
-
-            <input
-              name="unit"
-              value={form.unit}
-              onChange={handleChange}
-              placeholder="Unidade (UN, KG, L...)"
-            />
-
-            <input
-              name="cost_price"
-              value={form.cost_price}
-              onChange={handleChange}
-              placeholder="Preço de custo"
-            />
-
-            <input
-              name="sale_price"
-              value={form.sale_price}
-              onChange={handleChange}
-              placeholder="Preço de venda"
-            />
-
-            <input
-              name="min_stock"
-              value={form.min_stock}
-              onChange={handleChange}
-              placeholder="Estoque mínimo"
-            />
-
           </div>
 
-          {/* SELECT */}
-          <select
-            name="category_id"
-            value={form.category_id}
-            onChange={handleChange}
-            className="modal-select"
-          >
-            <option value="">Selecione uma categoria</option>
-            {categories.map((c) => (
-              <option key={c.id} value={c.id}>
-                {c.name}
-              </option>
-            ))}
-          </select>
+          {/* SKU + UNIDADE */}
+          <div className="form-row">
+            <div className="form-group">
+              <label>Código / SKU</label>
+              <input
+                name="sku"
+                value={form.sku}
+                onChange={handleChange}
+                placeholder="Ex: PST001"
+              />
+            </div>
 
-          {/* STATUS */}
-          <div className="modal-status">
-            <span>Status:</span>
+            <div className="form-group">
+              <label>Tipo     </label>
+              <select name="unit" value={form.unit} onChange={handleChange}>
+                <option value="und">Unidade</option>
+                <option value="g">Gramas</option>
+                <option value="kg">Quilos</option>
+                <option value="l">Litros</option>
+              </select>
+            </div>
+          </div>
 
-            <button
-              onClick={toggleActive}
-              className={`status-toggle ${form.is_active ? "active" : "inactive"}`}
-            >
-              {form.is_active ? "Ativo" : "Inativo"}
+          {/* FINANCEIRO: CUSTO, VENDA E REVENDA */}
+          <div className="form-row three-cols">
+            <div className="form-group">
+              <label>Preço de Custo</label>
+              <input
+                name="cost_price"
+                type="number"
+                value={form.cost_price}
+                onChange={handleChange}
+                placeholder="0,00"
+              />
+            </div>
+
+           <div className="form-group">
+              <label>Estoque Mínimo</label>
+              <input
+                name="min_stock"
+                type="number"
+                value={form.min_stock}
+                onChange={handleChange}
+                placeholder="Aviso de reposição"
+              />
+            </div>   
+
+            
+
+          {/* ESTOQUE + CATEGORIA */}
+          
+          
+
+            
+          </div>
+
+          <div className="form-row">
+          
+
+            <div className="form-group">
+              <label>Preço de Venda</label>
+              <input
+                name="sale_price"
+                type="number"
+                value={form.sale_price}
+                onChange={handleChange}
+                placeholder="0,00"
+              />
+            </div>
+
+            <div className="form-group">
+              <label>Preço de Revenda</label>
+              <input
+                name="resale_price"
+                type="number"
+                value={form.resale_price}
+                onChange={handleChange}
+                placeholder="0,00"
+              />
+            </div>
+          </div>
+          
+          <div className="form-row">
+            <div className="form-group categorias-box-add-product">
+              <label>Categoria</label>
+              <select
+                name="category_id"
+                value={form.category_id}
+                onChange={handleChange}
+              >
+                <option value="">Selecione uma categoria</option>
+                {categories.map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          {/* STATUS E AÇÕES */}
+          <div className="modal-footer">
+            <div className="status-container">
+              <label>Status do Produto</label>
+              <button
+                onClick={toggleActive}
+                className={`status-toggle ${form.is_active ? "active" : "inactive"}`}
+              >
+                <div className="dot"></div>
+                {form.is_active ? "Ativo no Sistema" : "Inativo / Oculto"}
+              </button>
+            </div>
+
+            <button className="modal-button primary" onClick={handleSave}>
+              <Save size={18} /> Criar Produto
             </button>
           </div>
-
-          {/* ACTION */}
-          <button className="modal-button" onClick={handleSave}>
-            <Save size={16} />
-            Criar Produto
-          </button>
 
         </div>
       </div>

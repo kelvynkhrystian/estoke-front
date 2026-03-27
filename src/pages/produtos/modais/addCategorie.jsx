@@ -5,8 +5,13 @@ import "./modals.css";
 
 export default function AddCategorie({ open, onClose }) {
   const [name, setName] = useState("");
+  const [active, setActive] = useState(1); // 🔥 status
 
   if (!open) return null;
+
+  const toggleActive = () => {
+    setActive(active ? 0 : 1);
+  };
 
   const handleSave = () => {
     if (!name) {
@@ -14,29 +19,57 @@ export default function AddCategorie({ open, onClose }) {
       return;
     }
 
-    toast.success("Categoria criada");
+    console.log({
+      name,
+      is_active: active,
+    });
+
+    toast.success("Categoria criada (mock)");
     onClose();
+
+    setName("");
+    setActive(1);
   };
 
   return (
     <div className="modal-overlay">
-      <div className="modal-box">
+      <div className="modal-box"> {/* ✅ IMPORTANTE */}
 
+        {/* HEADER */}
         <div className="modal-header">
           <h2>Nova Categoria</h2>
-          <button onClick={onClose}><X /></button>
+          <button onClick={onClose}><X size={18} /></button>
         </div>
 
-        <input
-          placeholder="Nome da categoria"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
+        {/* FORM */}
+        <div className="modal-form">
 
-        <button className="btn-primary" onClick={handleSave}>
-          <Save size={16}/> Salvar
-        </button>
+          {/* INPUT + BOTÃO */}
+          <div className="form-row">
+            <input
+              placeholder="Nome da categoria"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
 
+            <button className="modal-inline-button" onClick={handleSave}>
+              <Save size={16}/> Salvar
+            </button>
+          </div>
+
+          {/* STATUS */}
+          <div className="modal-status">
+            <span>Status:</span>
+
+            <button
+              onClick={toggleActive}
+              className={`status-toggle ${active ? "active" : "inactive"}`}
+            >
+              {active ? "Ativo" : "Inativo"}
+            </button>
+          </div>
+
+        </div>
       </div>
     </div>
   );

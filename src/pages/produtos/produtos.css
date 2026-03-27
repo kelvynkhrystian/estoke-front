@@ -160,7 +160,7 @@
 }
 
 .products-subtab.active {
-  color: white;
+  color: var(--text2);
   border-color: var(--dark);
 
   box-shadow: 0 6px 16px rgba(0,0,0,0.15);
@@ -204,8 +204,6 @@
 
   transition: 0.2s;
 
-  /* 🔥 DIFERENCIAL */
-  box-shadow: 0 6px 16px rgba(47, 158, 68, 0.25);
 }
 
 .btn-primary:hover {
@@ -279,4 +277,16 @@
 .status.inactive {
   background: rgba(239, 68, 68, 0.15);
   color: #ef4444;
+}
+
+
+
+@media (max-width: 768px) {
+  .btn-primary {
+    width: 100%;
+    align-items: center;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+  }
 }
