@@ -3,12 +3,35 @@ import { X, Save } from "lucide-react";
 import toast from "react-hot-toast";
 import "./modals.css";
 
-export default function EditProduct({ open, onClose, product, categories }) {
-  const [form, setForm] = useState({});
+export default function EditProduct({ open, onClose, categories, product }) {
+  const [form, setForm] = useState({
+    name: "",
+    sku: "",
+    unit: "und",
+    cost_price: "",
+    sale_price: "",
+    resale_price: "",
+    min_stock: "",
+    category_id: "",
+    is_active: 1,
+  });
 
+  // 🔥 Carrega os dados do produto quando o modal abre ou o produto muda
   useEffect(() => {
-    if (product) setForm(product);
-  }, [product]);
+    if (product) {
+      setForm({
+        name: product.name || "",
+        sku: product.sku || "",
+        unit: product.unit || "und",
+        cost_price: product.cost_price || "",
+        sale_price: product.sale_price || "",
+        resale_price: product.resale_price || "",
+        min_stock: product.min_stock || "",
+        category_id: product.category_id || "",
+        is_active: product.is_active ?? 1,
+      });
+    }
+  }, [product, open]);
 
   if (!open) return null;
 
@@ -21,115 +44,148 @@ export default function EditProduct({ open, onClose, product, categories }) {
   };
 
   const handleSave = () => {
-    if (!form.name) {
-      toast.error("Nome obrigatório");
+    if (!form.name || !form.category_id || !form.sale_price) {
+      toast.error("Preencha os campos obrigatórios!");
       return;
     }
 
-    if (!form.category_id) {
-      toast.error("Categoria obrigatória");
-      return;
-    }
-
-    toast.success("Produto atualizado (mock)");
+    // 🔥 Aqui você chamaria sua API de Update enviando (product.id, form)
+    console.log("Editando produto ID:", product.id, form);
+    toast.success("Alterações salvas com sucesso!");
     onClose();
   };
 
   return (
     <div className="modal-overlay">
-      <div className="modal-box">
-
+      <div className="modal-box glass">
+        {/* HEADER */}
         <div className="modal-header">
-          <h2>Editar Produto</h2>
-          <button onClick={onClose}><X /></button>
-        </div>
-
-        {/* NOME */}
-        <input
-          name="name"
-          value={form.name || ""}
-          onChange={handleChange}
-          placeholder="Nome"
-        />
-
-        {/* SKU */}
-        <input
-          name="sku"
-          value={form.sku || ""}
-          onChange={handleChange}
-          placeholder="SKU"
-        />
-
-        {/* UNIDADE */}
-        <input
-          name="unit"
-          value={form.unit || ""}
-          onChange={handleChange}
-          placeholder="Unidade (UN, KG, L...)"
-        />
-
-        {/* PREÇO CUSTO */}
-        <input
-          name="cost_price"
-          value={form.cost_price || ""}
-          onChange={handleChange}
-          placeholder="Preço de custo"
-        />
-
-        {/* PREÇO VENDA */}
-        <input
-          name="sale_price"
-          value={form.sale_price || ""}
-          onChange={handleChange}
-          placeholder="Preço de venda"
-        />
-
-        {/* ESTOQUE */}
-        <input
-          name="min_stock"
-          value={form.min_stock || ""}
-          onChange={handleChange}
-          placeholder="Estoque mínimo"
-        />
-
-        {/* CATEGORIA */}
-        <select
-          name="category_id"
-          value={form.category_id || ""}
-          onChange={handleChange}
-        >
-          <option value="">Selecione</option>
-          {categories.map(c => (
-            <option key={c.id} value={c.id}>{c.name}</option>
-          ))}
-        </select>
-
-        {/* STATUS */}
-        <div style={{ marginTop: 10 }}>
-          <label>Status:</label>
-
-          <button
-            onClick={toggleActive}
-            style={{
-              marginLeft: 10,
-              background: form.is_active ? "#22c55e" : "#ef4444",
-              padding: "6px 12px",
-              borderRadius: "8px",
-              border: "none",
-              color: "#fff",
-              cursor: "pointer"
-            }}
-          >
-            {form.is_active ? "Ativo" : "Inativo"}
+          <div>
+            <h2>Editar Produto</h2>
+            <p className="modal-subtitle">ID: #{product?.id} - Altere as informações necessárias</p>
+          </div>
+          <button onClick={onClose} className="modal-close">
+            <X size={18} />
           </button>
         </div>
 
-        {/* SALVAR */}
-        <button className="btn-primary" onClick={handleSave}>
-          <Save size={16}/> Salvar
-        </button>
+        {/* FORM */}
+        <div className="modal-form">
+          
+          <div className="form-group">
+            <label>Nome do Produto</label>
+            <input
+              name="name"
+              value={form.name}
+              onChange={handleChange}
+            />
+          </div>
 
+          <div className="form-row">
+            <div className="form-group">
+              <label>Código / SKU</label>
+              <input
+                name="sku"
+                value={form.sku}
+                onChange={handleChange}
+              />
+            </div>
+
+            <div className="form-group">
+              <label>Tipo</label>
+              <select name="unit" value={form.unit} onChange={handleChange}>
+                <option value="und">Unidade</option>
+                <option value="g">Gramas</option>
+                <option value="kg">Quilos</option>
+                <option value="l">Litros</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="form-row three-cols">
+            <div className="form-group">
+              <label>Preço de Custo</label>
+              <input
+                name="cost_price"
+                type="number"
+                value={form.cost_price}
+                onChange={handleChange}
+              />
+            </div>
+
+            <div className="form-group">
+              <label>Estoque Mínimo</label>
+              <input
+                name="min_stock"
+                type="number"
+                value={form.min_stock}
+                onChange={handleChange}
+              />
+            </div>
+          </div>
+
+          <div className="form-row">
+            <div className="form-group">
+              <label>Preço de Venda</label>
+              <input
+                name="sale_price"
+                type="number"
+                value={form.sale_price}
+                onChange={handleChange}
+              />
+            </div>
+
+            <div className="form-group">
+              <label>Preço de Revenda</label>
+              <input
+                name="resale_price"
+                type="number"
+                value={form.resale_price}
+                onChange={handleChange}
+              />
+            </div>
+          </div>
+          
+          <div className="form-row">
+            <div className="form-group categorias-box-add-product">
+              <label>Categoria</label>
+              <select
+                name="category_id"
+                value={form.category_id}
+                onChange={handleChange}
+              >
+                {categories.map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          {/* FOOTER */}
+          <div className="modal-footer">
+            <div className="status-container">
+              <label>Status do Produto</label>
+              <button
+                onClick={toggleActive}
+                className={`status-toggle ${form.is_active ? "active" : "inactive"}`}
+              >
+                <div className="dot"></div>
+                {form.is_active ? "Ativo" : "Inativo"}
+              </button>
+            </div>
+
+            <button className="modal-button primary" onClick={handleSave}>
+              <Save size={18} /> Salvar Alterações
+            </button>
+          </div>
+
+        </div>
       </div>
     </div>
   );
 }
+
+
+

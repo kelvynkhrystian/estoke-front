@@ -1,5 +1,8 @@
 import { useState, useEffect, useMemo } from "react";
 import "./produtos.css";
+import { Trash2 } from "lucide-react"; // Adicione este ícone
+import toast from "react-hot-toast"; // Para avisar que excluiu
+
 
 import HeaderProdutos from "../../components/produtos/HeaderProdutos";
 import TabsProdutos from "../../components/produtos/TabsProdutos";
@@ -10,6 +13,7 @@ import AddProduct from "./modais/addProduct";
 import EditProduct from "./modais/editProduct";
 import AddCategorie from "./modais/addCategorie";
 import EditCategorie from "./modais/editCategorie";
+
 
 // 🔥 REGRA CENTRAL
 const isInsumoCategory = (category) => {
@@ -38,7 +42,12 @@ export default function Produtos() {
   const API_URL = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
-    const fetchData = async () => {
+    
+
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
       try {
         const token = localStorage.getItem("token");
 
@@ -76,9 +85,6 @@ export default function Produtos() {
       }
     };
 
-    fetchData();
-  }, []);
-
   // ============================
   // 🔥 FILTROS
   // ============================
@@ -110,8 +116,39 @@ export default function Produtos() {
   }
 
   // ============================
-  // RENDER
+  // outros
   // ============================
+
+  const handleDeleteCategory = async (id) => {
+    if (!confirm("Tem certeza que deseja excluir esta categoria?")) return;
+
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`${API_URL}/categories/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        toast.success("Categoria excluída com sucesso!");
+        // Atualiza a lista localmente removendo a categoria deletada
+        setCategories(categories.filter((cat) => cat.id !== id));
+      } else {
+        const errorData = await response.json();
+        toast.error(errorData.message || "Erro ao excluir categoria.");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Erro de conexão ao excluir.");
+    }
+  };
+
+
+
+
+
 
   return (
     <div className="products-page">
@@ -210,42 +247,51 @@ export default function Produtos() {
 
         {/* CATEGORIAS */}
         {tab === "categorias" && (
-          <>
-            <button
-              className="btn-primary"
-              onClick={() => setOpenAddCategory(true)}
-            >
-              + Nova Categoria
-            </button>
+            <>
+              <button
+                className="btn-primary"
+                onClick={() => setOpenAddCategory(true)}
+              >
+                + Nova Categoria
+              </button>
 
-            <table className="table">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Nome</th>
-                  <th>Status</th>
-                  <th>Produtos</th>
-                </tr>
-              </thead>
-
-              <tbody>
-                {categories.map((cat) => (
-                  <tr key={cat.id}>
-                    <td>{cat.id}</td>
-                    <td>{cat.name}</td>
-
-                    <td>
-                      <span className={`status ${cat.is_active ? "active" : "inactive"}`}>
-                        {cat.is_active ? "Ativo" : "Inativo"}
-                      </span>
-                    </td>
-
-                    <td>{getTotalByCategory(cat.id)}</td>
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Status</th>
+                    <th>Produtos</th>
+                    <th style={{ textAlign: "right" }}>Ações</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </>
+                </thead>
+
+                <tbody>
+                  {categories.map((cat) => (
+                    <tr key={cat.id}>
+                      <td>{cat.id}</td>
+                      <td>{cat.name}</td>
+                      <td>
+                        <span className={`status ${cat.is_active ? "active" : "inactive"}`}>
+                          {cat.is_active ? "Ativo" : "Inativo"}
+                        </span>
+                      </td>
+                      <td>{getTotalByCategory(cat.id)}</td>
+                      {/* Coluna com o Botão de Excluir */}
+                      <td style={{ textAlign: "right" }}>
+                        <button 
+                          className="btn-delete" 
+                          onClick={() => handleDeleteCategory(cat.id)}
+                          style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}
+                        >
+                          <Trash2 size={18} color="#ff4d4d" />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </>
         )}
 
         {/* MODAIS PRODUTO */}
@@ -266,12 +312,14 @@ export default function Produtos() {
         <AddCategorie
           open={openAddCategory}
           onClose={() => setOpenAddCategory(false)}
+          onRefresh={fetchData}
         />
 
         <EditCategorie
           open={openEditCategory}
           onClose={() => setOpenEditCategory(false)}
           category={selectedCategory}
+          onRefresh={fetchData}
         />
 
       </div>

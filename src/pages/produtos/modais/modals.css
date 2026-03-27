@@ -185,7 +185,7 @@
 
   padding: 12px;
 
-  color: var(--primary-contrast);
+  color: #fff;
   font-weight: 600;
 
   display: flex;
@@ -255,7 +255,11 @@ label {
   margin-left: 10px;
 }
 
-
+.btn-categorie-modal {
+  display: flex;
+  flex-direction: column;
+  margin: 15px 0;
+}
 
 @media (max-width: 768px) {
   .categorias-box-add-product {
