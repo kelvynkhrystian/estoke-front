@@ -1,0 +1,282 @@
+/* ============================= */
+/* PAGE */
+/* ============================= */
+
+.products-page {
+  padding: 16px;
+  position: relative;
+  z-index: 1;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* ============================= */
+/* HEADER */
+/* ============================= */
+
+.products-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.products-back {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+
+  background: var(--bg-secondary);
+  color: var(--text);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.products-back:hover {
+  background: var(--bg-soft);
+}
+
+/* TÍTULO */
+
+.products-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.products-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+
+  background: var(--dark);
+  color: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.products-title h1 {
+  font-size: 18px;
+  margin: 0;
+  color: var(--text);
+}
+
+.products-title p {
+  font-size: 13px;
+  margin: 0;
+  color: var(--text-muted);
+}
+
+/* ============================= */
+/* TABS */
+/* ============================= */
+
+.products-tabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.products-tab {
+  flex: 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  padding: 12px;
+  border-radius: 14px;
+
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+
+  color: var(--text-muted);
+
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.2s;
+
+  /* 🔥 IMPORTANTE */
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.products-tab:hover {
+  background: var(--bg-soft);
+}
+
+.products-tab.active {
+  background: var(--dark);
+  color: white;
+  border-color: var(--dark);
+
+  box-shadow: 0 6px 16px rgba(47, 158, 68, 0.25);
+}
+
+/* ============================= */
+/* SUBTABS */
+/* ============================= */
+
+.products-subtabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.products-subtab {
+  flex: 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  padding: 10px;
+  border-radius: 12px;
+
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+
+  color: var(--text-muted);
+
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.2s;
+
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.products-subtab:hover {
+  background: var(--bg-soft);
+}
+
+.products-subtab.active {
+  color: white;
+  border-color: var(--dark);
+
+  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+}
+
+/* ============================= */
+/* CONTENT CARD */
+/* ============================= */
+
+.products-content {
+  background: var(--bg-secondary);
+  border-radius: 20px;
+  padding: 18px;
+
+  border: 1px solid var(--border);
+
+  /* 🔥 PROFISSIONAL */
+  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+}
+
+/* ============================= */
+/* BUTTON PRIMARY */
+/* ============================= */
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  background: var(--dark);
+  color: white;
+
+  border: none;
+  padding: 12px 16px;
+  border-radius: 14px;
+
+  font-weight: 600;
+  cursor: pointer;
+
+  margin-bottom: 16px;
+
+  transition: 0.2s;
+
+  /* 🔥 DIFERENCIAL */
+  box-shadow: 0 6px 16px rgba(47, 158, 68, 0.25);
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+}
+
+/* ============================= */
+/* LIST */
+/* ============================= */
+
+.list-item {
+  padding: 14px 0;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  border-bottom: 1px solid var(--border);
+
+  font-size: 14px;
+  color: var(--text);
+}
+
+.list-item:last-child {
+  border-bottom: none;
+}
+
+
+/* ============================= */
+/* TABLE */
+/* ============================= */
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.table th {
+  text-align: left;
+  font-size: 12px;
+  color: var(--text-muted);
+  padding-bottom: 10px;
+}
+
+.table td {
+  padding: 12px 0;
+  border-top: 1px solid var(--border);
+  font-size: 14px;
+  color: var(--text);
+}
+
+.table tr:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* STATUS */
+
+.status {
+  padding: 4px 10px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.status.active {
+  background: rgba(34, 197, 94, 0.15);
+  color: #22c55e;
+}
+
+.status.inactive {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+}

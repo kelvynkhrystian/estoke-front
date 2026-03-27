@@ -226,7 +226,7 @@ export default function Config() {
 
           <div>
             <h1>Configurações</h1>
-            <p>Gerencie sua conta e preferências do sistema</p>
+            <p>Gerencie sua conta e preferências</p>
           </div>
         </div>
       </div>

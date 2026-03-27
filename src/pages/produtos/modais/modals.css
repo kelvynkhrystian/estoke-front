@@ -1,0 +1,294 @@
+.modal-box {
+  /* background-color: #0c0c1a; */
+  padding: 20px;
+  border-radius: 10px;
+  width: 90%;
+}
+
+/* =========================
+   OVERLAY (FUNDO)
+========================= */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 999;
+}
+
+/* =========================
+   CONTAINER
+========================= */
+.modal-container {
+  width: 100%;
+  max-width: 420px;
+
+  background: linear-gradient(180deg, #1b1b2f, #141427);
+  border-radius: 16px;
+
+  padding: 20px;
+
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+  animation: modalFade 0.2s ease;
+}
+
+/* =========================
+   HEADER
+========================= */
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 15px;
+}
+
+.modal-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #aaa;
+  transition: 0.2s;
+}
+
+.modal-close:hover {
+  color: #fff;
+}
+
+/* =========================
+   FORM
+========================= */
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* INPUT */
+.modal-form input,
+.modal-form select {
+  background: #0f0f1f;
+  border: 1px solid #2a2a40;
+  border-radius: 8px;
+
+  padding: 10px;
+  color: #fff;
+  font-size: 14px;
+
+  outline: none;
+  transition: 0.2s;
+}
+
+.modal-form input:focus,
+.modal-form select:focus {
+  border-color: #7c5cff;
+  box-shadow: 0 0 0 2px rgba(124, 92, 255, 0.2);
+}
+
+/* =========================
+   STATUS
+========================= */
+.modal-status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #ccc;
+}
+
+.status-badge {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.status-active {
+  background: #1f8f4d;
+  color: #fff;
+}
+
+.status-inactive {
+  background: #8f1f1f;
+  color: #fff;
+}
+
+/* =========================
+   FOOTER
+========================= */
+.modal-footer {
+  margin-top: 15px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* BOTÃO */
+.modal-button {
+  background: linear-gradient(90deg, #7c5cff, #5a3df0);
+  border: none;
+  border-radius: 10px;
+
+  padding: 10px 16px;
+  color: #fff;
+  font-weight: 600;
+
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.modal-button:hover {
+  transform: scale(1.05);
+  opacity: 0.95;
+}
+
+/* =========================
+   ANIMAÇÃO
+========================= */
+@keyframes modalFade {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* =========================
+   CLOSE BUTTON
+========================= */
+.modal-close {
+  background: transparent;
+  border: none;
+  color: #aaa;
+  cursor: pointer;
+}
+
+/* =========================
+   FORM WRAPPER
+========================= */
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* =========================
+   GRID
+========================= */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+@media (max-width: 500px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================
+   INPUTS
+========================= */
+.modal-form input {
+  width: 100%;
+  padding: 12px;
+
+  background: #0c0c1a;
+  border: 1px solid #2a2a40;
+  border-radius: 10px;
+
+  color: #fff;
+  font-size: 14px;
+
+  transition: all 0.2s ease;
+}
+
+.modal-form input::placeholder {
+  color: #777;
+}
+
+.modal-form input:focus {
+  border-color: #7c5cff;
+  box-shadow: 0 0 0 2px rgba(124, 92, 255, 0.25);
+  background: #0f0f22;
+}
+
+/* =========================
+   SELECT
+========================= */
+.modal-select {
+  width: 100%;
+  padding: 12px;
+
+  background: #0c0c1a;
+  border: 1px solid #2a2a40;
+  border-radius: 10px;
+
+  color: #fff;
+}
+
+/* =========================
+   STATUS
+========================= */
+.modal-status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #bbb;
+}
+
+.status-toggle {
+  border: none;
+  padding: 6px 12px;
+  border-radius: 8px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.status-toggle.active {
+  background: #22c55e;
+}
+
+.status-toggle.inactive {
+  background: #ef4444;
+}
+
+/* =========================
+   BUTTON
+========================= */
+.modal-button {
+  background: linear-gradient(90deg, #7c5cff, #5a3df0);
+  border: none;
+  border-radius: 12px;
+
+  padding: 12px;
+  color: #fff;
+  font-weight: 600;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.modal-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(124, 92, 255, 0.3);
+}
