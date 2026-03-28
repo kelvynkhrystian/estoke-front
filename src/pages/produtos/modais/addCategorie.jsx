@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { X, Save } from "lucide-react";
 import toast from "react-hot-toast";
+import { createCategory } from "../../../services/categoryService";
 
 export default function AddCategory({ open, onClose, onRefresh }) {
   const [name, setName] = useState("");
@@ -18,33 +19,20 @@ export default function AddCategory({ open, onClose, onRefresh }) {
 
     setLoading(true);
     try {
-      const token = localStorage.getItem("token");
-      const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
-
-      const response = await fetch(`${API_URL}/categories`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}` // Autenticação corrigida
-        },
-        body: JSON.stringify({ 
-          name: name, 
-          is_active: isActive 
-        }),
+      await createCategory({
+        name: name.trim(),
+        is_active: Number(isActive),
       });
 
-      if (response.ok) {
-        toast.success("Categoria adicionada com sucesso!");
-        setName(""); // Limpa o campo
-        setIsActive(1); // Reseta o status
-        onRefresh(); // 🔥 Chama a função que você passou no Produtos.jsx para atualizar a lista
-        onClose();   // Fecha o modal
-      } else {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Erro ao salvar");
-      }
+      toast.success("Categoria adicionada com sucesso!");
+      setName("");
+      setIsActive(1);
+      onRefresh();
+      onClose();
     } catch (error) {
-      toast.error("Erro: " + error.message);
+      const message =
+        error.response?.data?.message || error.message || "Erro ao salvar";
+      toast.error("Erro: " + message);
     } finally {
       setLoading(false);
     }
@@ -75,7 +63,7 @@ export default function AddCategory({ open, onClose, onRefresh }) {
             <label>Status da Categoria</label>
             <button 
               type="button"
-              onClick={() => setIsActive(isActive === 1 ? 0 : 1)}
+              onClick={() => setIsActive((prev) => (prev === 1 ? 0 : 1))}
               className={`status-toggle ${isActive ? "active" : "inactive"}`}
             >
               {isActive ? "Ativo no Sistema" : "Inativo / Oculto"}
