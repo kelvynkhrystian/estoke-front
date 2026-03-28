@@ -261,6 +261,37 @@ label {
   margin: 15px 0;
 }
 
+.ingredientes-box {
+  margin-bottom: 10px;
+}
+
+.ingredientes-box select {
+  width: 50%;
+}
+
+.ingredientes-box input {
+  width: 20%;
+}
+
+.ingredientes-box button {
+  width: 10%;
+}
+
+.ingredientes-box svg {
+  width: 30px;
+}
+
+.insumos-container .modal-button {
+ margin: 25px 0;
+ background-color: var(--dark);
+}
+
+.addcodigo div{
+  width: 50%;
+}
+
+
+
 @media (max-width: 768px) {
   .categorias-box-add-product {
     width: 100%;
