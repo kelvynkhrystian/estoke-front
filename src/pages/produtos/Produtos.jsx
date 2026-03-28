@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo, useCallback } from "react";
 import "./produtos.css";
 import { Trash2 } from "lucide-react";
 import toast from "react-hot-toast";
+import { api } from "../../api/api";
 
 // Componentes de Layout
 import HeaderProdutos from "../../components/produtos/HeaderProdutos";
@@ -38,41 +39,26 @@ export default function Produtos() {
 
   const [modalType, setModalType] = useState("produto");
 
-  // Configuração da API
-  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
   // ============================
   // 🔥 FETCH DATA (Envolvido em useCallback para estabilidade)
   // ============================
   const fetchData = useCallback(async () => {
     try {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        toast.error("Sessão expirada. Faça login novamente.");
-        return;
-      }
-
-      const headers = { Authorization: `Bearer ${token}` };
-
       const [catRes, prodRes] = await Promise.all([
-        fetch(`${API_URL}/categories`, { headers }),
-        fetch(`${API_URL}/products`, { headers }),
+        api.get("/categories"),
+        api.get("/products"),
       ]);
 
-      if (!catRes.ok || !prodRes.ok) throw new Error("Erro na API");
-
-      const cats = await catRes.json();
-      const prods = await prodRes.json();
-
-      setCategories(Array.isArray(cats) ? cats : []);
-      setProducts(Array.isArray(prods) ? prods : []);
+      setCategories(Array.isArray(catRes.data) ? catRes.data : []);
+      setProducts(Array.isArray(prodRes.data) ? prodRes.data : []);
     } catch (err) {
       console.error("Erro ao carregar dados:", err);
       toast.error("Erro ao carregar dados do servidor.");
     } finally {
       setLoading(false);
     }
-  }, [API_URL]);
+  }, []);
 
   useEffect(() => {
     fetchData();
@@ -106,21 +92,13 @@ export default function Produtos() {
     if (!confirm("Tem certeza que deseja excluir esta categoria?")) return;
 
     try {
-      const token = localStorage.getItem("token");
-      const response = await fetch(`${API_URL}/categories/${id}`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      if (response.ok) {
-        toast.success("Categoria excluída!");
-        fetchData();
-      } else {
-        const errorData = await response.json();
-        toast.error(errorData.message || "Erro ao excluir. Verifique dependências.");
-      }
+      await api.delete(`/categories/${id}`);
+      toast.success("Categoria excluída!");
+      fetchData();
     } catch (err) {
-      toast.error("Erro de conexão.");
+      const message =
+        err.response?.data?.message || "Erro ao excluir. Verifique dependências.";
+      toast.error(message);
     }
   };
 
@@ -128,20 +106,13 @@ export default function Produtos() {
     if (!confirm("Deseja realmente excluir este item?")) return;
 
     try {
-      const token = localStorage.getItem("token");
-      const response = await fetch(`${API_URL}/products/${id}`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` }
-      });
-
-      if (response.ok) {
-        toast.success("Item excluído!");
-        fetchData();
-      } else {
-        toast.error("Erro ao excluir o item.");
-      }
+      await api.delete(`/products/${id}`);
+      toast.success("Item excluído!");
+      fetchData();
     } catch (error) {
-      toast.error("Erro de conexão.");
+      const message =
+        error.response?.data?.message || "Erro ao excluir o item.";
+      toast.error(message);
     }
   };
 

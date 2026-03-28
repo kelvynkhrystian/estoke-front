@@ -14,3 +14,24 @@ api.interceptors.request.use((config) => {
 
   return config;
 });
+
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    const status = error.response?.status;
+
+    console.log("🔥 interceptor");
+    console.log("status:", status);
+
+    if (status === 401) {
+      console.log("🔒 Token expirado - fazendo logout");
+
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+
+      window.location.href = "/";
+    }
+
+    return Promise.reject(error);
+  }
+);
