@@ -2,10 +2,40 @@
 import { useState, useMemo, useEffect } from "react";
 import { X, Save } from "lucide-react";
 import toast from "react-hot-toast";
+import { getInsumos } from "../../../services/insumoService";
 import "./modals.css";
 
 export default function EditProduct({ open, onClose, product, categories, onRefresh, type }) {
   const [loading, setLoading] = useState(false);
+  const [useInsumos, setUseInsumos] = useState(false);
+  const [insumosList, setInsumosList] = useState([]);
+  const [insumosData, setInsumosData] = useState([]);
+
+  const loadInsumos = async () => {
+    try {
+      const res = await getInsumos();
+      setInsumosList(res.data);
+    } catch {
+      toast.error("Erro ao carregar insumos");
+    }
+  };
+
+  const addInsumoRow = () => {
+    setInsumosData((prev) => [
+      ...prev,
+      { insumo_id: "", quantity: "" }
+    ]);
+  };
+
+  const removeInsumoRow = (index) => {
+    setInsumosData((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const handleInsumoChange = (index, field, value) => {
+    const updated = [...insumosData];
+    updated[index][field] = value;
+    setInsumosData(updated);
+  };
 
   const [form, setForm] = useState({
     name: "",
@@ -35,7 +65,25 @@ export default function EditProduct({ open, onClose, product, categories, onRefr
         is_active: product.is_active ? 1 : 0,
       });
     }
+    // 🔥 SE O PRODUTO TEM INSUMOS
+    if (product && Array.isArray(product.insumos) && product.insumos.length > 0) {
+      
+      setUseInsumos(true);
+
+      setInsumosData(
+        product.insumos.map((i) => ({
+          insumo_id: i.insumo_id,
+          quantity: i.quantity
+        }))
+      );
+    }
   }, [open, product]);
+
+  useEffect(() => {
+    if (useInsumos) {
+      loadInsumos();
+    }
+  }, [useInsumos]);
 
   // 2. FILTRO DE CATEGORIAS: Mantém a lógica de separar Produto de Insumo
   const filteredCategories = useMemo(() => {
@@ -79,11 +127,23 @@ export default function EditProduct({ open, onClose, product, categories, onRefr
         },
         body: JSON.stringify({
           ...form,
+
           cost_price: parseFloat(form.cost_price) || 0,
           sale_price: parseFloat(form.sale_price) || 0,
           resale_price: parseFloat(form.resale_price) || 0,
           min_stock: parseFloat(form.min_stock) || 0,
-          type: type 
+
+          type,
+
+          // 🔥 INSUMOS
+          insumos: useInsumos
+            ? insumosData
+                .filter((i) => i.insumo_id && i.quantity)
+                .map((i) => ({
+                  insumo_id: i.insumo_id,
+                  quantity: parseFloat(i.quantity),
+                }))
+            : [],
         }),
       });
 
@@ -224,6 +284,74 @@ export default function EditProduct({ open, onClose, product, categories, onRefr
                 {form.is_active ? "Ativo no Sistema" : "Inativo / Oculto"}
               </button>
             </div>
+
+            <div className="status-container">
+              <label>Adicionar Ingredientes?</label>
+              <button
+                type="button"
+                onClick={() => setUseInsumos((prev) => !prev)}
+                className={`status-toggle ${useInsumos ? "active" : "inactive"}`}
+              >
+                {useInsumos ? "SIM" : "NÃO"}
+              </button>
+            </div>
+
+            {useInsumos && (
+              <div className="insumos-container">
+                {insumosData.map((item, index) => {
+                  const selected = insumosList.find(i => i.id === item.insumo_id);
+
+                  return (
+                    <div key={index} className="form-row ingredientes-box" style={{ alignItems: "center" }}>
+
+                      <select
+                        value={item.insumo_id}
+                        onChange={(e) =>
+                          handleInsumoChange(index, "insumo_id", Number(e.target.value))
+                        }
+                      >
+                        <option value="">Selecione</option>
+                        {insumosList.map((ins) => (
+                          <option key={ins.id} value={ins.id}>
+                            {ins.name}
+                          </option>
+                        ))}
+                      </select>
+
+                      <input
+                        type="number"
+                        min="0"
+                        placeholder="Qtd"
+                        value={item.quantity}
+                        onChange={(e) =>
+                          handleInsumoChange(index, "quantity", e.target.value)
+                        }
+                      />
+
+                      <input value={selected?.unit || ""} disabled />
+
+                      <button
+                        type="button"
+                        onClick={() => removeInsumoRow(index)}
+                        style={{
+                          background: "transparent",
+                          border: "none",
+                          cursor: "pointer",
+                          color: "#ff4d4f"
+                        }}
+                      >
+                        <X size={25} />
+                      </button>
+
+                    </div>
+                  );
+                })}
+
+                <button onClick={addInsumoRow} className="modal-button">
+                  + Adicionar ingrediente
+                </button>
+              </div>
+            )}
 
             <button 
               className="modal-button primary" 
