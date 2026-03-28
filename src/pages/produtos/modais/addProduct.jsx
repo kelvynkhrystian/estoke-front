@@ -138,7 +138,7 @@ export default function AddProduct({ open, onClose, categories, onRefresh, type 
             </div>
 
             <div className="form-group">
-              <label>Unidade de Medida</label>
+              <label>Medida</label>
               <select name="unit" value={form.unit} onChange={handleChange}>
                 <option value="und">Unidade (un)</option>
                 <option value="g">Gramas (g)</option>
