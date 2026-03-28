@@ -207,6 +207,7 @@ export default function AddProduct({ open, onClose, categories, onRefresh, type 
               <input
                 name="cost_price"
                 type="number"
+                min="0"
                 value={form.cost_price}
                 onChange={handleChange}
                 placeholder="0,00"
@@ -218,6 +219,7 @@ export default function AddProduct({ open, onClose, categories, onRefresh, type 
               <input
                 name="min_stock"
                 type="number"
+                min="0"
                 value={form.min_stock}
                 onChange={handleChange}
                 placeholder="Aviso de reposição"
@@ -232,6 +234,7 @@ export default function AddProduct({ open, onClose, categories, onRefresh, type 
               <input
                 name="sale_price"
                 type="number"
+                min="0"
                 value={form.sale_price}
                 onChange={handleChange}
                 placeholder="0,00"
@@ -243,6 +246,7 @@ export default function AddProduct({ open, onClose, categories, onRefresh, type 
               <input
                 name="resale_price"
                 type="number"
+                min="0"
                 value={form.resale_price}
                 onChange={handleChange}
                 placeholder="0,00"
@@ -317,6 +321,7 @@ export default function AddProduct({ open, onClose, categories, onRefresh, type 
                       {/* QUANTIDADE */}
                       <input
                         type="number"
+                        min="0"
                         placeholder="Qtd"
                         value={item.quantity}
                         onChange={(e) =>
