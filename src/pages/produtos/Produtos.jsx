@@ -13,7 +13,10 @@ import SubTabsProdutos from "../../components/produtos/SubTabsProdutos";
 import AddProduct from "./modais/addProduct";
 import EditProduct from "./modais/editProduct";
 import AddCategorie from "./modais/addCategorie";
-import EditCategory from "./modais/editCategorie"; // 🔥 Importado como EditCategory para combinar com o return
+import EditCategory from "./modais/editCategorie"; 
+import AddInsumo from "./modais/addInsumo";
+import EditInsumo from "./modais/editInsumo";
+
 
 // 🔥 REGRA CENTRAL: Proteção contra erro se category for undefined ou nulo
 const isInsumoCategory = (category) => {
@@ -26,6 +29,7 @@ export default function Produtos() {
 
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
+  const [insumos, setInsumos] = useState([]);
   const [loading, setLoading] = useState(true);
 
   // Estados dos Modais
@@ -37,6 +41,11 @@ export default function Produtos() {
   const [openEditCategory, setOpenEditCategory] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
 
+  const [openAddInsumo, setOpenAddInsumo] = useState(false);
+  const [openEditInsumo, setOpenEditInsumo] = useState(false);
+  const [selectedInsumo, setSelectedInsumo] = useState(null);
+  
+
   const [modalType, setModalType] = useState("produto");
 
 
@@ -45,13 +54,15 @@ export default function Produtos() {
   // ============================
   const fetchData = useCallback(async () => {
     try {
-      const [catRes, prodRes] = await Promise.all([
+      const [catRes, prodRes, insRes] = await Promise.all([
         api.get("/categories"),
         api.get("/products"),
+        api.get("/insumos"),
       ]);
 
       setCategories(Array.isArray(catRes.data) ? catRes.data : []);
       setProducts(Array.isArray(prodRes.data) ? prodRes.data : []);
+      setInsumos(Array.isArray(insRes.data) ? insRes.data : []);
     } catch (err) {
       console.error("Erro ao carregar dados:", err);
       toast.error("Erro ao carregar dados do servidor.");
@@ -74,12 +85,7 @@ export default function Produtos() {
     });
   }, [products, categories]);
 
-  const insumos = useMemo(() => {
-    return products.filter((p) => {
-      const cat = categories.find((c) => c.id === p.category_id);
-      return cat && isInsumoCategory(cat);
-    });
-  }, [products, categories]);
+
 
   const getTotalByCategory = (categoryId) => {
     return products.filter((p) => p.category_id === categoryId).length;
@@ -112,6 +118,20 @@ export default function Produtos() {
     } catch (error) {
       const message =
         error.response?.data?.message || "Erro ao excluir o item.";
+      toast.error(message);
+    }
+  };
+
+  const handleDeleteInsumo = async (id) => {
+    if (!confirm("Deseja realmente excluir este insumo?")) return;
+
+    try {
+      await api.delete(`/insumos/${id}`);
+      toast.success("Insumo excluído!");
+      fetchData();
+    } catch (error) {
+      const message =
+        error.response?.data?.message || "Erro ao excluir o insumo.";
       toast.error(message);
     }
   };
@@ -198,8 +218,7 @@ export default function Produtos() {
             <button
               className="btn-primary"
               onClick={() => {
-                setModalType("insumo");
-                setOpenAddProduct(true);
+                setOpenAddInsumo(true);
               }}
             >
               + Novo Insumo
@@ -220,9 +239,8 @@ export default function Produtos() {
                   <tr
                     key={p.id}
                     onDoubleClick={() => {
-                      setModalType("insumo"); 
-                      setSelectedProduct(p);    
-                      setOpenEditProduct(true); 
+                      setSelectedInsumo(p);
+                      setOpenEditInsumo(true);
                     }}
                   >
                     <td>{p.id}</td>
@@ -234,7 +252,7 @@ export default function Produtos() {
                         className="btn-icon-delete" 
                         onClick={(e) => {
                           e.stopPropagation();
-                          handleDeleteProduct(p.id);
+                          handleDeleteInsumo(p.id);
                         }}
                       >
                         <Trash2 size={18} color="#ff4d4d" />
@@ -333,6 +351,19 @@ export default function Produtos() {
           open={openEditCategory}
           onClose={() => setOpenEditCategory(false)}
           category={selectedCategory}
+          onRefresh={fetchData}
+        />
+
+        <AddInsumo
+          open={openAddInsumo}
+          onClose={() => setOpenAddInsumo(false)}
+          onRefresh={fetchData}
+        />
+
+        <EditInsumo
+          open={openEditInsumo}
+          onClose={() => setOpenEditInsumo(false)}
+          insumo={selectedInsumo}
           onRefresh={fetchData}
         />
 
