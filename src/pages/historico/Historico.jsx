@@ -6,7 +6,7 @@ export default function Historico() {
       <HeaderHistorico />
 
       <div>
-        <h2>Conteúdo da página</h2>
+        <h2>Página detalhada do Histórico</h2>
       </div>
     </>
   );

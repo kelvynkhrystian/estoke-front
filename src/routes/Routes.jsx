@@ -21,8 +21,10 @@ import Lojas from "../pages/lojas/Lojas";
 import Relatorios from "../pages/relatorios/Relatorios";
 import Perdas from "../pages/perdas/Perdas";
 import Config from "../pages/config/Config";
+import Historico from "../pages/historico/Historico";
 
 import NotFound from "../components/notFound/NotFound";
+
 
 export function AppRoutes() {
   return (
@@ -49,6 +51,7 @@ export function AppRoutes() {
           <Route path="/lojas" element={<Lojas />} />
           <Route path="/relatorios" element={<Relatorios />} />
           <Route path="/perdas" element={<Perdas />} />
+          <Route path="/historico" element={<Historico />} />
           <Route path="/config" element={<Config />} />
 
         </Route>

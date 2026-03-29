@@ -10,6 +10,7 @@ import {
   FileText,
   TriangleAlert,
   ShoppingCart,
+  History,
 } from "lucide-react";
 import { useState } from "react";
 import "./painel.css";
@@ -35,8 +36,9 @@ const atalhos = [
   { title: "Estoque", icon: Boxes, to: "/estoque" },
   { title: "Pedidos", icon: ClipboardList, to: "/pedidos" },
   { title: "Lojas", icon: Store, to: "/lojas" },
-  { title: "Relatórios", icon: FileText, to: "/relatorios" },
   { title: "Perdas", icon: TriangleAlert, to: "/perdas" },
+  { title: "Relatórios", icon: FileText, to: "/relatorios" },
+  { title: "Histórico", icon: History, to: "/historico" },
   { title: "Configurações", icon: Settings, to: "/config" },
 ];
 
