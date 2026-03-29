@@ -1,8 +1,13 @@
-export default function Lojas() {
+import HeaderLojas from "./HeaderLojas";
 
+export default function Lojas() {
   return (
-    <div>
-      <h5>Página detalhada dos Lojas</h5>
-    </div>
+    <>
+      <HeaderLojas />
+
+      <div>
+        <h2>Conteúdo da página</h2>
+      </div>
+    </>
   );
 }

@@ -1,8 +1,13 @@
-export default function Estoque() {
+import HeaderEstoque from "./HeaderEstoque";
 
+export default function Estoque() {
   return (
-    <div>
-      <h5>Página detalhada dos Estoque</h5>
-    </div>
+    <>
+      <HeaderEstoque />
+
+      <div>
+        <h2>Conteúdo da página</h2>
+      </div>
+    </>
   );
 }

@@ -1,8 +1,13 @@
-export default function Relatórios() {
+import HeaderRelatorios from "./HeaderRelatorios";
 
+export default function Relatorios() {
   return (
-    <div>
-      <h5>Página detalhada dos relatorios</h5>
-    </div>
+    <>
+      <HeaderRelatorios />
+
+      <div>
+        <h2>Conteúdo da página</h2>
+      </div>
+    </>
   );
 }

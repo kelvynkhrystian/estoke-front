@@ -1,8 +1,13 @@
-export default function Alertas() {
+import HeaderAlertas from "./HeaderAlertas";
 
+export default function Alertas() {
   return (
-    <div>
-      <h5>Página detalhada dos alertas</h5>
-    </div>
+    <>
+      <HeaderAlertas />
+
+      <div>
+        <h2>Conteúdo da página</h2>
+      </div>
+    </>
   );
 }

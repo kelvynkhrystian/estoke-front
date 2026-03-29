@@ -1,8 +1,13 @@
-export default function Perdas() {
+import HeaderPerdas from "./HeaderPerdas";
 
+export default function Perdas() {
   return (
-    <div>
-      <h5>Página detalhada dos Perdas</h5>
-    </div>
+    <>
+      <HeaderPerdas />
+
+      <div>
+        <h2>Conteúdo da página</h2>
+      </div>
+    </>
   );
 }

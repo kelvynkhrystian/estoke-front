@@ -1,8 +1,13 @@
-export default function Pedidos() {
+import HeaderPedidos from "./HeaderPedidos";
 
+export default function Pedidos() {
   return (
-    <div>
-      <h5>Página detalhada dos Pedidos</h5>
-    </div>
+    <>
+      <HeaderPedidos />
+
+      <div>
+        <h2>Conteúdo da página</h2>
+      </div>
+    </>
   );
 }
