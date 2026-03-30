@@ -1,6 +1,9 @@
 import { useMemo, useState, useEffect } from "react";
 import { getStock, addMovement, transferStock } from "../../services/stockService";
+import { getProducts } from "../../services/productService";
+import { getInsumos } from "../../services/insumoService";
 import HeaderEstoque from "./HeaderEstoque";
+import { getStores } from "../../services/storeService";
 import "./estoque.css"
 import {
   Boxes,
@@ -20,36 +23,50 @@ export default function Estoque() {
   const [modalTransferencia, setModalTransferencia] = useState(false);
   const [itens, setItens] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedStore, setSelectedStore] = useState(null);
+  const [lojas, setLojas] = useState([]);
+  const [produtos, setProdutos] = useState([])
 
 
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const tipo = abaAtiva === "produtos" ? "PRODUCT" : "INSUMO";
-
-        const { data } = await getStock(tipo);
-
-        const formatado = data.map((item) => ({
-          id: item.item_id,
-          nome: item.name,
-          sku: item.sku || "-",
-          estoque: item.quantity,
-          minimo: item.min_stock || 0,
-          loja: item.store_name || "Minha loja",
-          tipo: item.item_type === "PRODUCT" ? "produto" : "insumo",
-        }));
-
-        setItens(formatado);
+        const tipo = abaAtiva === "produtos" ? "PRODUCT" : "INSUMO"
+        const { data } = await getStock(tipo, selectedStore)
+        setItens(formatarItens(data))
       } catch (err) {
-        console.error(err);
+        console.error(err)
       } finally {
-        setLoading(true);
+        setLoading(false)
       }
     }
 
-    fetchData();
-  }, [abaAtiva]);
+    fetchData()
+  }, [abaAtiva, selectedStore])
+
+  useEffect(() => {
+    async function loadStores() {
+      const { data } = await getStores();
+      setLojas(data);
+    }
+
+    loadStores();
+  }, []);
+
+  useEffect(() => {
+    fetchItensBase()
+  }, [abaAtiva])
+
+  const fetchItensBase = async () => {
+    if (abaAtiva === "produtos") {
+      const { data } = await getProducts()
+      setProdutos(data)
+    } else {
+      const { data } = await getInsumos()
+      setProdutos(data)
+    }
+  }
 
   const [movimentacao, setMovimentacao] = useState({
     item_id: "",
@@ -69,25 +86,31 @@ export default function Estoque() {
     observacao: "",
   });
 
+
   function formatarItens(data) {
     return data.map((item) => ({
       id: item.item_id,
       nome: item.name,
       sku: item.sku || "-",
-      estoque: item.quantity,
-      minimo: item.min_stock || 0,
+      estoque: Number(item.quantity || 0),
+      minimo: Number(item.min_stock || 0),
       loja: item.store_name || "Minha loja",
+      store_id: Number(item.store_id), // <- essencial
       tipo: item.item_type === "PRODUCT" ? "produto" : "insumo",
     }));
   }
 
+  const itensAtivos = itens.filter((item) => {
+    const tipoOk =
+      abaAtiva === "produtos"
+        ? item.tipo === "produto"
+        : item.tipo === "insumo";
 
+    const lojaOk =
+      selectedStore === null || Number(item.store_id) === Number(selectedStore);
 
-  const itensAtivos = itens.filter(item =>
-    abaAtiva === "produtos"
-      ? item.tipo === "produto"
-      : item.tipo === "insumo"
-  );
+    return tipoOk && lojaOk;
+  });
 
   const totais = useMemo(() => {
     const totalItens = itensAtivos.length;
@@ -106,7 +129,7 @@ export default function Estoque() {
 
   const motivosSaida = [
     { value: "venda", label: "Venda" },
-    { value: "perda", label: "Perda" },
+    { value: "perda", label: "Perda / Avaria" },
     { value: "consumo_interno", label: "Consumo interno" },
     { value: "ajuste_negativo", label: "Ajuste negativo" },
   ];
@@ -138,6 +161,8 @@ export default function Estoque() {
     setModalTransferencia(true);
   }
 
+  
+
   async function handleSalvarMovimentacao(e) {
     e.preventDefault();
 
@@ -155,7 +180,7 @@ export default function Estoque() {
 
       // 🔥 atualiza estoque
       const tipo = abaAtiva === "produtos" ? "PRODUCT" : "INSUMO";
-      const { data } = await getStock(tipo);
+      const { data } = await getStock(tipo, selectedStore);
       setItens(formatarItens(data));
 
     } catch (err) {
@@ -166,24 +191,64 @@ export default function Estoque() {
   async function handleSalvarTransferencia(e) {
     e.preventDefault();
 
+    // 🔥 VALIDAÇÕES (COLE AQUI)
+
+    if (!transferencia.item_id) {
+      alert("Selecione um item");
+      return;
+    }
+
+    if (!transferencia.loja_origem_id) {
+      alert("Selecione a loja de origem");
+      return;
+    }
+
+    if (!transferencia.loja_destino_id) {
+      alert("Selecione a loja de destino");
+      return;
+    }
+
+    if (Number(transferencia.loja_origem_id) === Number(transferencia.loja_destino_id)) {
+      alert("Origem e destino não podem ser iguais");
+      return;
+    }
+
+    if (Number(transferencia.quantidade) <= 0) {
+      alert("Quantidade inválida");
+      return;
+    }
+
+    // 🔥 VALIDA ESTOQUE
+    const estoqueOrigem = itens.find(
+      (i) =>
+        i.id === Number(transferencia.item_id) &&
+        i.store_id === Number(transferencia.loja_origem_id)
+    );
+
+    if (!estoqueOrigem || estoqueOrigem.estoque < transferencia.quantidade) {
+      alert("Estoque insuficiente na loja de origem");
+      return;
+    }
+
+    // 🚀 AGORA SIM CHAMA API
     try {
       await transferStock({
-        to_store_id: transferencia.loja_destino_id,
+        from_store_id: Number(transferencia.loja_origem_id),
+        to_store_id: Number(transferencia.loja_destino_id),
+        item_type: transferencia.tipo_item === "produto" ? "PRODUCT" : "INSUMO",
         items: [
           {
-            item_id: transferencia.item_id,
+            item_id: Number(transferencia.item_id),
             quantity: Number(transferencia.quantidade),
           },
         ],
-        item_type: transferencia.tipo_item === "produto" ? "PRODUCT" : "INSUMO",
         notes: transferencia.observacao,
       });
 
       setModalTransferencia(false);
 
-      // 🔥 atualiza estoque
       const tipo = abaAtiva === "produtos" ? "PRODUCT" : "INSUMO";
-      const { data } = await getStock(tipo);
+      const { data } = await getStock(tipo, selectedStore);
       setItens(formatarItens(data));
 
     } catch (err) {
@@ -255,6 +320,25 @@ export default function Estoque() {
           </button>
         </div>
 
+        <div className="stores-scroll">
+          <button
+            className={`store-card ${selectedStore === null ? "active" : ""}`}
+            onClick={() => setSelectedStore(null)}
+          >
+            Todas
+          </button>
+
+          {lojas.map((store) => (
+            <button
+              key={store.id}
+              className={`store-card ${Number(selectedStore) === Number(store.id) ? "active" : ""}`}
+              onClick={() => setSelectedStore(Number(store.id))}
+            >
+              {store.name}
+            </button>
+          ))}
+        </div>
+
         <div className="products-content">
           <table className="table">
             <thead>
@@ -281,7 +365,7 @@ export default function Estoque() {
                   const abaixoMinimo = Number(item.estoque) < Number(item.minimo);
 
                   return (
-                    <tr key={item.id}>
+                    <tr key={`${item.tipo}-${item.id}-${item.store_id}`}>
                       <td>{item.id}</td>
                       <td><strong>{item.nome}</strong></td>
                       {/* <td>{item.sku}</td> */}
@@ -317,6 +401,7 @@ export default function Estoque() {
                 <label>Tipo de item</label>
                 <select
                   value={abaAtiva === "produtos" ? "produto" : "insumo"}
+                  disabled
                   onChange={(e) =>
                     setMovimentacao({ ...movimentacao, tipo_item: e.target.value, item_id: "" })
                   }
@@ -336,9 +421,9 @@ export default function Estoque() {
                   required
                 >
                   <option value="">Selecione</option>
-                  {itensAtivos.map((item) => (
-                    <option key={item.id} value={item.id}>
-                      {item.nome}
+                  {produtos.map((item) => (
+                    <option key={`${item.id}`} value={item.id}>
+                      {item.name}
                     </option>
                   ))}
                 </select>
@@ -440,6 +525,7 @@ export default function Estoque() {
                 <label>Tipo de item</label>
                 <select
                   value={transferencia.tipo_item}
+                  disabled
                   onChange={(e) =>
                     setTransferencia({ ...transferencia, tipo_item: e.target.value, item_id: "" })
                   }
@@ -458,10 +544,11 @@ export default function Estoque() {
                   }
                   required
                 >
-                  <option value="">Selecione</option>
-                  {itensAtivos.map((item) => (
+                  <option value="">Selecione</option> {/* 🔥 ADICIONA ISSO */}
+                  
+                  {produtos.map((item) => (
                     <option key={item.id} value={item.id}>
-                      {item.nome}
+                      {item.name}
                     </option>
                   ))}
                 </select>
@@ -475,10 +562,13 @@ export default function Estoque() {
                     onChange={(e) =>
                       setTransferencia({ ...transferencia, loja_origem_id: e.target.value })
                     }
-                    required
                   >
                     <option value="">Selecione</option>
-                    <option value="1">Minha loja</option>
+                    {lojas.map((loja) => (
+                      <option key={loja.id} value={loja.id}>
+                        {loja.name}
+                      </option>
+                    ))}
                   </select>
                 </div>
 
@@ -489,12 +579,17 @@ export default function Estoque() {
                     onChange={(e) =>
                       setTransferencia({ ...transferencia, loja_destino_id: e.target.value })
                     }
-                    required
                   >
                     <option value="">Selecione</option>
-                    <option value="1">Minha loja</option>
-                    <option value="2">Filial 1</option>
+                    {lojas
+                      .filter(loja => Number(loja.id) !== Number(transferencia.loja_origem_id))
+                      .map(loja => (
+                        <option key={loja.id} value={loja.id}>
+                          {loja.name}
+                        </option>
+                    ))}
                   </select>
+                  
                 </div>
               </div>
 
