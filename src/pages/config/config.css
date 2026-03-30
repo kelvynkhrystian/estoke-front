@@ -269,7 +269,7 @@
 
   border-radius: 10px;
 
-  background: #6c5ce7;
+  background: var(--dark);
   color: white;
   font-weight: bold;
 

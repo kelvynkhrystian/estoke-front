@@ -189,11 +189,11 @@ export default function Produtos() {
                     }}
                   >
                     <td>{p.id}</td>
-                    <td>{p.name}</td>
+                    <td><strong>{p.name}</strong></td>
                     <td>
                       R$ {p.sale_price ? Number(p.sale_price).toFixed(2) : "0.00"}
                     </td>
-                    <td>{p.min_stock}</td>
+                    <td><strong>{p.min_stock}</strong></td>
                     <td style={{ textAlign: 'center' }}>
                       <button 
                         className="btn-icon-delete" 
@@ -244,9 +244,9 @@ export default function Produtos() {
                     }}
                   >
                     <td>{p.id}</td>
-                    <td>{p.name}</td>
+                    <td><strong>{p.name}</strong></td>
                     <td>{p.unit || "N/A"}</td>
-                    <td>{p.min_stock}</td>
+                    <td><strong>{p.min_stock}</strong></td>
                     <td style={{ textAlign: 'center' }}>
                       <button 
                         className="btn-icon-delete" 
@@ -295,7 +295,7 @@ export default function Produtos() {
                     }}
                   >
                     <td>{cat.id}</td>
-                    <td>{cat.name}</td>
+                    <td><strong>{cat.name}</strong></td>
                     <td>
                       <span className={`status ${cat.is_active ? "active" : "inactive"}`}>
                         {cat.is_active ? "Ativo" : "Inativo"}

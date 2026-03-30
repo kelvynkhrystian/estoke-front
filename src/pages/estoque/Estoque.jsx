@@ -255,16 +255,16 @@ export default function Estoque() {
           </button>
         </div>
 
-        <div className="products-table-card">
-          <table className="products-table">
+        <div className="products-content">
+          <table className="table">
             <thead>
               <tr>
                 <th>ID</th>
                 <th>Nome</th>
                 {/* <th>SKU</th> */}
                 <th>Loja</th>
-                <th>Qtd. Atual</th>
-                <th>Qtd. Mín.</th>
+                <th>Atual</th>
+                <th>Mín.</th>
                 {/* <th>Status</th> */}
               </tr>
             </thead>
@@ -283,10 +283,10 @@ export default function Estoque() {
                   return (
                     <tr key={item.id}>
                       <td>{item.id}</td>
-                      <td>{item.nome}</td>
+                      <td><strong>{item.nome}</strong></td>
                       {/* <td>{item.sku}</td> */}
                       <td>{item.loja}</td>
-                      <td>{item.estoque}</td>
+                      <td><strong>{item.estoque}</strong></td>
                       <td>{item.minimo}</td>
                       {/* <td>
                         <span className={abaixoMinimo ? "status-badge danger" : "status-badge success"}>
@@ -304,7 +304,7 @@ export default function Estoque() {
 
       {modalMovimentacao && (
         <div className="modal-overlay" onClick={() => setModalMovimentacao(false)}>
-          <div className="modal-card" onClick={(e) => e.stopPropagation()}>
+          <div className="modal-box glass" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
               <h3>Nova movimentação</h3>
               <button className="icon-btn" onClick={() => setModalMovimentacao(false)}>
@@ -346,7 +346,7 @@ export default function Estoque() {
 
               <div className="form-row">
                 <div className="form-group">
-                  <label>Tipo de movimento</label>
+                  <label>Movimento</label>
                   <select
                     value={movimentacao.tipo_movimento}
                     onChange={(e) =>
@@ -395,7 +395,7 @@ export default function Estoque() {
                 </select>
               </div>
 
-              <div className="form-group">
+              <div className="form-group textarea-group">
                 <label>Observação / explicação</label>
                 <textarea
                   rows="4"
@@ -415,9 +415,7 @@ export default function Estoque() {
               )}
 
               <div className="modal-actions">
-                <button type="button" className="btn-secondary" onClick={() => setModalMovimentacao(false)}>
-                  Cancelar
-                </button>
+                
                 <button type="submit" className="btn-primary">
                   Salvar movimentação
                 </button>
@@ -429,7 +427,7 @@ export default function Estoque() {
 
       {modalTransferencia && (
         <div className="modal-overlay" onClick={() => setModalTransferencia(false)}>
-          <div className="modal-card" onClick={(e) => e.stopPropagation()}>
+          <div className="modal-box glass" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
               <h3>Transferência entre lojas</h3>
               <button className="icon-btn" onClick={() => setModalTransferencia(false)}>
@@ -514,7 +512,7 @@ export default function Estoque() {
                 />
               </div>
 
-              <div className="form-group">
+              <div className="form-group textarea-group">
                 <label>Observação</label>
                 <textarea
                   rows="4"
@@ -527,9 +525,7 @@ export default function Estoque() {
               </div>
 
               <div className="modal-actions">
-                <button type="button" className="btn-secondary" onClick={() => setModalTransferencia(false)}>
-                  Cancelar
-                </button>
+              
                 <button type="submit" className="btn-primary">
                   Salvar transferência
                 </button>
