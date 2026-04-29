@@ -1,8 +1,11 @@
-📦 Estoke Front
+# 📦 Estoke Front
 
-Frontend da aplicação de gerenciamento de estoque Estoke, desenvolvido com React + Vite.
+Frontend da aplicação de gerenciamento de estoque **Estoke**, desenvolvido com **React + Vite**.
 
-🚀 Tecnologias
+---
+
+## 🚀 Tecnologias
+
 - React
 - Vite
 - JavaScript
@@ -16,57 +19,113 @@ Frontend da aplicação de gerenciamento de estoque Estoke, desenvolvido com Rea
 - ESLint
 - Prettier
 
-🧠 Arquitetura
-Feature-based Architecture + separação por camadas:
-Component-based UI, Service Layer, Context API.
+---
 
-📁 Estrutura
+## 🧠 Arquitetura
+
+**Feature-based Architecture** + separação por camadas:
+
+- Component-based UI  
+- Service Layer  
+- Context API  
+
+---
+
+## 📁 Estrutura
+
+```
 src/
-api/
-assets/
-components/
-contexts/
-hooks/
-features/
-layouts/
-routes/
-styles/
-utils/
+├─ api/
+├─ assets/
+├─ components/
+├─ contexts/
+├─ hooks/
+├─ features/
+├─ layouts/
+├─ routes/
+├─ styles/
+└─ utils/
+```
 
-🔗 API
-Axios com interceptors para JWT e erros globais.
+---
 
-🔐 Autenticação
-JWT com armazenamento local.
+## 🔗 API
 
-🧪 Validação
-Zod + React Hook Form.
+Axios configurado com interceptors para:
 
-🎨 Estilo
-CSS Modules por componente.
+- Inserção automática de JWT
+- Tratamento de erros globais
 
-⚙️ Configuração
+---
+
+## 🔐 Autenticação
+
+- Baseada em JWT
+- Token armazenado localmente
+
+---
+
+## 🧪 Validação
+
+- Zod  
+- React Hook Form  
+
+---
+
+## 🎨 Estilo
+
+- CSS Modules por componente
+
+---
+
+## ⚙️ Configuração
+
+```
 VITE_API_URL=http://localhost:3000
+```
 
-▶️ Rodando
+---
+
+## ▶️ Rodando o projeto
+
+```bash
 npm install
 npm run dev
+```
 
-🧪 Testes
-Jest + React Testing Library + Cypress (planejado)
+---
 
-📚 Boas práticas
-- Feature-based
+## 🧪 Testes
+
+Planejado:
+
+- Jest  
+- React Testing Library  
+- Cypress  
+
+---
+
+## 📚 Boas práticas
+
+- Arquitetura feature-based
 - Código modular
 - Axios centralizado
 - Validação com Zod
-- CSS isolado
+- CSS isolado (Modules)
 - ESLint + Prettier
 
-🔧 Próximos passos
-- Testes
-- UX
-- Permissões
-- Performance
+---
 
-Autor: Kelvyn Khrystian
+## 🔧 Próximos passos
+
+- Melhorar UX
+- Implementar testes
+- Sistema de permissões
+- Otimização de performance
+
+---
+
+## 👨‍💻 Autor
+
+**Kelvyn Khrystian**
+
