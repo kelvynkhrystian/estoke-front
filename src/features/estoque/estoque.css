@@ -1,0 +1,190 @@
+.stocks-actions {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 5px;
+}
+
+.stocks-actions button {
+  font-size: 12px;
+}
+
+/* ====== CARDS ESTOQUE (VERSÃO CLEAN) ====== */
+.estoque-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 16px 0 20px;
+}
+
+/* CARD BASE */
+.estoque-card {
+  background: var(--bg-secondary);
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  border: 1px solid var(--border);
+  backdrop-filter: blur(6px);
+
+  transition: all 0.2s ease;
+}
+
+/* HOVER SUAVE */
+.estoque-card:hover {
+  transform: translateY(-2px);
+}
+
+/* TÍTULO */
+.estoque-card span {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* VALOR */
+.estoque-card strong {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* ====== CARD NORMAL ====== */
+.estoque-card.total {
+  background: linear-gradient(
+    135deg,
+    rgba(108, 99, 255, 0.15),
+    rgba(108, 99, 255, 0.05)
+  );
+}
+
+/* ====== CARD ALERTA ====== */
+.estoque-card.alerta {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 77, 79, 0.15),
+    rgba(255, 77, 79, 0.05)
+  );
+  border: 1px solid rgba(255, 77, 79, 0.3);
+}
+
+/* NUMERO ALERTA MAIS FORTE */
+.estoque-card.alerta strong {
+  color: #ff4d4f;
+}
+
+.products-table-card {
+  margin-top: 20px;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+}
+
+.products-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.products-table thead {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.products-table th {
+  text-align: left;
+  padding: 12px;
+  font-weight: 600;
+  color: #2e2e2e;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.products-table td {
+  padding: 12px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  color: #444;
+}
+
+.products-table tbody tr {
+  transition: all 0.2s ease;
+}
+
+.products-table tbody tr:hover {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.products-table td:nth-child(1) {
+  font-weight: bold;
+  color: #2f855a;
+}
+
+.products-table td:nth-child(4) {
+  font-weight: bold;
+}
+
+/* 🔥 textarea container */
+.textarea-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+
+
+/* 🔥 textarea */
+.textarea-group textarea {
+  width: 100%;
+  min-height: 90px;
+  resize: none;
+
+  padding: 12px;
+  border-radius: 10px;
+
+  background: var(--bg);
+
+  color: var(--text);
+  font-size: 14px;
+
+  transition: all 0.2s ease;
+}
+
+/* 🔥 foco */
+.textarea-group textarea:focus {
+  outline: none;
+  
+}
+
+/* 🔥 placeholder */
+.textarea-group textarea::placeholder {
+  color: #6b7280;
+}
+
+.stores-scroll {
+  display: flex;
+  overflow-x: auto;
+  gap: 10px;
+  padding: 10px 0;
+  margin-bottom: 10px;
+}
+
+.store-card {
+  min-width: 120px;
+  padding: 10px;
+  border-radius: 12px;
+  background: #1e1e2f;
+  color: #fff;
+  border: 1px solid #333;
+  cursor: pointer;
+}
+
+.store-card.active {
+  background: #6c5ce7;
+}
+
+/* ====== RESPONSIVO ====== */
+@media (max-width: 769px) {
+  .estoque-cards {
+    grid-template-columns: 1fr 1fr;
+  }
+}

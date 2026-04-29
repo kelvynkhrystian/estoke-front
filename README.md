@@ -1,16 +1,72 @@
-# React + Vite
+📦 Estoke Front
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Frontend da aplicação de gerenciamento de estoque Estoke, desenvolvido com React + Vite.
 
-Currently, two official plugins are available:
+🚀 Tecnologias
+- React
+- Vite
+- JavaScript
+- React Router DOM
+- Axios
+- Zod
+- React Hook Form
+- React Hot Toast
+- Lucide React
+- CSS Modules
+- ESLint
+- Prettier
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+🧠 Arquitetura
+Feature-based Architecture + separação por camadas:
+Component-based UI, Service Layer, Context API.
 
-## React Compiler
+📁 Estrutura
+src/
+api/
+assets/
+components/
+contexts/
+hooks/
+features/
+layouts/
+routes/
+styles/
+utils/
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+🔗 API
+Axios com interceptors para JWT e erros globais.
 
-## Expanding the ESLint configuration
+🔐 Autenticação
+JWT com armazenamento local.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+🧪 Validação
+Zod + React Hook Form.
+
+🎨 Estilo
+CSS Modules por componente.
+
+⚙️ Configuração
+VITE_API_URL=http://localhost:3000
+
+▶️ Rodando
+npm install
+npm run dev
+
+🧪 Testes
+Jest + React Testing Library + Cypress (planejado)
+
+📚 Boas práticas
+- Feature-based
+- Código modular
+- Axios centralizado
+- Validação com Zod
+- CSS isolado
+- ESLint + Prettier
+
+🔧 Próximos passos
+- Testes
+- UX
+- Permissões
+- Performance
+
+Autor: Kelvyn Khrystian
