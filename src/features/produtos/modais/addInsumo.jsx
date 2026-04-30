@@ -1,14 +1,13 @@
-import { useState } from "react";
-import { X, Save } from "lucide-react";
-import toast from "react-hot-toast";
-import { createInsumo } from "../../../services/insumoService";
+import { useState } from 'react';
+import { X, Save } from 'lucide-react';
+import toast from 'react-hot-toast';
+import { createInsumo } from '../../../services/insumoService';
 
-
-const UNITS = ["kg", "g", "l", "ml", "und"];
+const UNITS = ['kg', 'g', 'l', 'ml', 'und'];
 
 export default function AddInsumo({ open, onClose, onRefresh }) {
-  const [name, setName] = useState("");
-  const [unit, setUnit] = useState("");
+  const [name, setName] = useState('');
+  const [unit, setUnit] = useState('');
   const [minStock, setMinStock] = useState(0);
   const [isActive, setIsActive] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -17,17 +16,17 @@ export default function AddInsumo({ open, onClose, onRefresh }) {
 
   const handleSave = async () => {
     if (!name.trim()) {
-      toast.error("O nome do insumo é obrigatório");
+      toast.error('O nome do insumo é obrigatório');
       return;
     }
 
     if (!unit.trim()) {
-      toast.error("A unidade é obrigatória");
+      toast.error('A unidade é obrigatória');
       return;
     }
 
     if (!unit) {
-      toast.error("Selecione uma unidade");
+      toast.error('Selecione uma unidade');
       return;
     }
 
@@ -40,10 +39,10 @@ export default function AddInsumo({ open, onClose, onRefresh }) {
         is_active: Number(isActive),
       });
 
-      toast.success("Insumo criado com sucesso!");
+      toast.success('Insumo criado com sucesso!');
 
-      setName("");
-      setUnit("");
+      setName('');
+      setUnit('');
       setMinStock(0);
       setIsActive(1);
 
@@ -51,8 +50,8 @@ export default function AddInsumo({ open, onClose, onRefresh }) {
       onClose();
     } catch (error) {
       const message =
-        error.response?.data?.message || error.message || "Erro ao salvar";
-      toast.error("Erro: " + message);
+        error.response?.data?.message || error.message || 'Erro ao salvar';
+      toast.error('Erro: ' + message);
     } finally {
       setLoading(false);
     }
@@ -81,10 +80,7 @@ export default function AddInsumo({ open, onClose, onRefresh }) {
 
           <div className="form-group">
             <label>Unidade</label>
-            <select
-              value={unit}
-              onChange={(e) => setUnit(e.target.value)}
-            >
+            <select value={unit} onChange={(e) => setUnit(e.target.value)}>
               <option value="">Selecione</option>
               {UNITS.map((u) => (
                 <option key={u} value={u}>
@@ -108,9 +104,9 @@ export default function AddInsumo({ open, onClose, onRefresh }) {
             <button
               type="button"
               onClick={() => setIsActive((prev) => (prev === 1 ? 0 : 1))}
-              className={`status-toggle ${isActive ? "active" : "inactive"}`}
+              className={`status-toggle ${isActive ? 'active' : 'inactive'}`}
             >
-              {isActive ? "Ativo no Sistema" : "Inativo / Oculto"}
+              {isActive ? 'Ativo no Sistema' : 'Inativo / Oculto'}
             </button>
           </div>
 
@@ -120,7 +116,7 @@ export default function AddInsumo({ open, onClose, onRefresh }) {
             disabled={loading}
           >
             <Save size={18} />
-            {loading ? "Salvando..." : "Salvar Insumo"}
+            {loading ? 'Salvando...' : 'Salvar Insumo'}
           </button>
         </div>
       </div>

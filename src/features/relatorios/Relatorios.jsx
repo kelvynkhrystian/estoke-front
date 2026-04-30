@@ -1,4 +1,4 @@
-import HeaderRelatorios from "./HeaderRelatorios";
+import HeaderRelatorios from './HeaderRelatorios';
 
 export default function Relatorios() {
   return (

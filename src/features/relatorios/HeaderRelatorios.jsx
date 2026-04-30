@@ -1,5 +1,5 @@
-import { ArrowLeft, BarChart3 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { ArrowLeft, BarChart3 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 export default function HeaderRelatorios() {
   const navigate = useNavigate();

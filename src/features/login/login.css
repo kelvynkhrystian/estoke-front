@@ -20,7 +20,7 @@
   inset: 0;
   z-index: 0;
 
-  background-image: url("/src/assets/backgrounds/fundo2.png");
+  background-image: url('/src/assets/backgrounds/fundo2.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -29,10 +29,10 @@
 }
 
 .login-background::after {
-  content: "";
+  content: '';
   position: absolute;
   inset: 0;
-  background: rgba(255,255,255,0.4); /* overlay light */
+  background: rgba(255, 255, 255, 0.4); /* overlay light */
 }
 
 /* TOGGLE */
@@ -54,7 +54,7 @@
   background: var(--bg-secondary);
   border: 1px solid var(--border);
 
-  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
 
   text-align: center;
 }
@@ -106,7 +106,7 @@
   border: 1px solid var(--border);
 }
 
-[data-theme="dark"] .input-group input {
+[data-theme='dark'] .input-group input {
   color: #ffffff; /* roxinho bonito */
 }
 
@@ -124,7 +124,7 @@
   border-radius: 12px;
 
   background: var(--accent);
-  color: var(--btn); 
+  color: var(--btn);
   font-weight: bold;
 
   transition: 0.2s;
@@ -141,18 +141,13 @@
   color: var(--text-muted);
 }
 
-[data-theme="dark"] .login-background {
+[data-theme='dark'] .login-background {
   background-image: none; /* remove imagem */
 
-  background: linear-gradient(
-    180deg,
-    #0f0f1a 0%,
-    #1a1a2e 40%,
-    #16213e 100%
-  );
+  background: linear-gradient(180deg, #0f0f1a 0%, #1a1a2e 40%, #16213e 100%);
 }
 
-[data-theme="dark"] .login-background::after {
+[data-theme='dark'] .login-background::after {
   background: rgba(0, 0, 0, 0.5); /* overlay escuro */
 }
 
@@ -161,12 +156,9 @@
   flex-shrink: 0;
 }
 
-[data-theme="dark"] .icon {
+[data-theme='dark'] .icon {
   color: #6c5ce7; /* roxinho bonito */
 }
-
-
-
 
 .theme-btn {
   position: absolute;
@@ -184,7 +176,7 @@
   justify-content: center;
 
   background: var(--bg-secondary);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 
   cursor: pointer;
   transition: 0.2s;
@@ -194,23 +186,8 @@
   transform: scale(1.1);
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 @media (max-width: 768px) {
   .login-background {
-
-    background-image: url("/src/assets/backgrounds/fundo1.png");
+    background-image: url('/src/assets/backgrounds/fundo1.png');
   }
 }

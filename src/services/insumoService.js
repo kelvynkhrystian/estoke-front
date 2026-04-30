@@ -1,10 +1,10 @@
-import { api } from "../api/api";
+import { api } from '../api/api';
 
 // LISTAR
-export const getInsumos = () => api.get("/insumos");
+export const getInsumos = () => api.get('/insumos');
 
 // CRIAR
-export const createInsumo = (data) => api.post("/insumos", data);
+export const createInsumo = (data) => api.post('/insumos', data);
 
 // ATUALIZAR
 export const updateInsumo = (id, data) => api.put(`/insumos/${id}`, data);

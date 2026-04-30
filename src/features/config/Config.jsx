@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 import {
   ArrowLeft,
   Settings,
@@ -7,39 +7,39 @@ import {
   Upload,
   Mail,
   Lock,
-  MessageCircle
-} from "lucide-react";
-import { useNavigate } from "react-router-dom";
-import "./config.css";
+  MessageCircle,
+} from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import './config.css';
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
 export default function Config() {
   const navigate = useNavigate();
 
-  const [tab, setTab] = useState("geral");
+  const [tab, setTab] = useState('geral');
   const [loading, setLoading] = useState(false);
 
   // GERAL
-  const [appName, setAppName] = useState("");
-  const [slogan, setSlogan] = useState("");
+  const [appName, setAppName] = useState('');
+  const [slogan, setSlogan] = useState('');
   const [logo, setLogo] = useState(null);
-  const [logoUrl, setLogoUrl] = useState("");
-  const [preview, setPreview] = useState("");
+  const [logoUrl, setLogoUrl] = useState('');
+  const [preview, setPreview] = useState('');
 
   // USUÁRIO
-  const [currentEmail, setCurrentEmail] = useState("");
+  const [currentEmail, setCurrentEmail] = useState('');
 
   // ALTERAR EMAIL
-  const [newEmail, setNewEmail] = useState("");
-  const [emailPassword, setEmailPassword] = useState("");
+  const [newEmail, setNewEmail] = useState('');
+  const [emailPassword, setEmailPassword] = useState('');
 
   // ALTERAR SENHA
-  const [currentPassword, setCurrentPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem('token');
 
   useEffect(() => {
     loadConfig();
@@ -50,20 +50,20 @@ export default function Config() {
     try {
       const response = await fetch(`${API_URL}/config`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`
-        }
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
       });
 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || "Erro ao buscar configurações");
+        throw new Error(data.message || 'Erro ao buscar configurações');
       }
 
-      setAppName(data.app_name || "");
-      setSlogan(data.slogan || "");
-      setLogoUrl(data.logo_url || "");
-      setPreview(data.logo_url ? `${API_URL}${data.logo_url}` : "");
+      setAppName(data.app_name || '');
+      setSlogan(data.slogan || '');
+      setLogoUrl(data.logo_url || '');
+      setPreview(data.logo_url ? `${API_URL}${data.logo_url}` : '');
     } catch (error) {
       console.error(error);
       alert(error.message);
@@ -72,21 +72,19 @@ export default function Config() {
 
   const loadProfile = async () => {
     try {
-
       const response = await fetch(`${API_URL}/auth/me`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`
-        }
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
       });
-
 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || "Erro ao buscar usuário");
+        throw new Error(data.message || 'Erro ao buscar usuário');
       }
 
-      setCurrentEmail(data.email || "");
+      setCurrentEmail(data.email || '');
     } catch (error) {
       console.error(error);
     }
@@ -105,32 +103,34 @@ export default function Config() {
       setLoading(true);
 
       const formData = new FormData();
-      formData.append("app_name", appName);
-      formData.append("slogan", slogan);
+      formData.append('app_name', appName);
+      formData.append('slogan', slogan);
 
       if (logo) {
-        formData.append("logo", logo);
+        formData.append('logo', logo);
       }
 
       const response = await fetch(`${API_URL}/config`, {
-        method: "PUT",
+        method: 'PUT',
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
-        body: formData
+        body: formData,
       });
 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || "Erro ao salvar configurações");
+        throw new Error(data.message || 'Erro ao salvar configurações');
       }
 
-      alert("Configurações atualizadas com sucesso!");
+      alert('Configurações atualizadas com sucesso!');
 
       setLogo(null);
-      setLogoUrl(data.logo_url || "");
-      setPreview(data.logo_url ? `${API_URL}${data.logo_url}?t=${Date.now()}` : preview);
+      setLogoUrl(data.logo_url || '');
+      setPreview(
+        data.logo_url ? `${API_URL}${data.logo_url}?t=${Date.now()}` : preview,
+      );
     } catch (error) {
       console.error(error);
       alert(error.message);
@@ -144,9 +144,9 @@ export default function Config() {
       setLoading(true);
 
       const response = await fetch(`${API_URL}/auth/update-email`, {
-        method: "PUT",
+        method: 'PUT',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
@@ -158,13 +158,13 @@ export default function Config() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || "Erro ao atualizar email");
+        throw new Error(data.message || 'Erro ao atualizar email');
       }
 
-      alert("Email atualizado com sucesso!");
+      alert('Email atualizado com sucesso!');
       setCurrentEmail(data.email);
-      setNewEmail("");
-      setEmailPassword("");
+      setNewEmail('');
+      setEmailPassword('');
     } catch (error) {
       console.error(error);
       alert(error.message);
@@ -176,16 +176,16 @@ export default function Config() {
   const handleUpdatePassword = async () => {
     try {
       if (newPassword !== confirmPassword) {
-        alert("A confirmação da nova senha não confere.");
+        alert('A confirmação da nova senha não confere.');
         return;
       }
 
       setLoading(true);
 
       const response = await fetch(`${API_URL}/auth/update-password`, {
-        method: "PUT",
+        method: 'PUT',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
@@ -197,13 +197,13 @@ export default function Config() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || "Erro ao atualizar senha");
+        throw new Error(data.message || 'Erro ao atualizar senha');
       }
 
-      alert("Senha atualizada com sucesso!");
-      setCurrentPassword("");
-      setNewPassword("");
-      setConfirmPassword("");
+      alert('Senha atualizada com sucesso!');
+      setCurrentPassword('');
+      setNewPassword('');
+      setConfirmPassword('');
     } catch (error) {
       console.error(error);
       alert(error.message);
@@ -233,24 +233,24 @@ export default function Config() {
 
       <div className="config-tabs">
         <button
-          className={tab === "geral" ? "active" : ""}
-          onClick={() => setTab("geral")}
+          className={tab === 'geral' ? 'active' : ''}
+          onClick={() => setTab('geral')}
         >
           <Settings size={16} />
           Geral
         </button>
 
         <button
-          className={tab === "credenciais" ? "active" : ""}
-          onClick={() => setTab("credenciais")}
+          className={tab === 'credenciais' ? 'active' : ''}
+          onClick={() => setTab('credenciais')}
         >
           <Key size={16} />
           Credenciais
         </button>
 
         <button
-          className={tab === "info" ? "active" : ""}
-          onClick={() => setTab("info")}
+          className={tab === 'info' ? 'active' : ''}
+          onClick={() => setTab('info')}
         >
           <Info size={16} />
           Info
@@ -258,7 +258,7 @@ export default function Config() {
       </div>
 
       <div className="config-content">
-        {tab === "geral" && (
+        {tab === 'geral' && (
           <div className="config-card">
             <h3>Geral</h3>
 
@@ -296,23 +296,26 @@ export default function Config() {
                 </div>
               )}
 
-              <button className="btn-save" onClick={handleSaveConfig} disabled={loading}>
-                {loading ? "Salvando..." : "Salvar configurações"}
+              <button
+                className="btn-save"
+                onClick={handleSaveConfig}
+                disabled={loading}
+              >
+                {loading ? 'Salvando...' : 'Salvar configurações'}
               </button>
             </div>
           </div>
         )}
 
-        {tab === "credenciais" && (
+        {tab === 'credenciais' && (
           <div className="config-credentials">
             <div className="config-card">
-              <h3><Mail size={16} /> Alterar Email</h3>
+              <h3>
+                <Mail size={16} /> Alterar Email
+              </h3>
 
               <div className="config-form">
-                <input
-                  value={currentEmail}
-                  disabled
-                />
+                <input value={currentEmail} disabled />
 
                 <input
                   placeholder="Novo email"
@@ -327,14 +330,20 @@ export default function Config() {
                   onChange={(e) => setEmailPassword(e.target.value)}
                 />
 
-                <button className="btn-save" onClick={handleUpdateEmail} disabled={loading}>
-                  {loading ? "Atualizando..." : "Atualizar Email"}
+                <button
+                  className="btn-save"
+                  onClick={handleUpdateEmail}
+                  disabled={loading}
+                >
+                  {loading ? 'Atualizando...' : 'Atualizar Email'}
                 </button>
               </div>
             </div>
 
             <div className="config-card">
-              <h3><Lock size={16} /> Alterar Senha</h3>
+              <h3>
+                <Lock size={16} /> Alterar Senha
+              </h3>
 
               <div className="config-form">
                 <input
@@ -358,19 +367,23 @@ export default function Config() {
                   onChange={(e) => setConfirmPassword(e.target.value)}
                 />
 
-                <button className="btn-save" onClick={handleUpdatePassword} disabled={loading}>
-                  {loading ? "Atualizando..." : "Atualizar Senha"}
+                <button
+                  className="btn-save"
+                  onClick={handleUpdatePassword}
+                  disabled={loading}
+                >
+                  {loading ? 'Atualizando...' : 'Atualizar Senha'}
                 </button>
               </div>
             </div>
           </div>
         )}
 
-        {tab === "info" && (
+        {tab === 'info' && (
           <div className="config-card info-card">
             <div className="info-row">
               <strong>App:</strong>
-              <span>{appName || "Estoke"}</span>
+              <span>{appName || 'Estoke'}</span>
             </div>
 
             <div className="info-row">

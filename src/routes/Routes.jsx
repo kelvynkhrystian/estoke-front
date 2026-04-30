@@ -1,35 +1,33 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route } from 'react-router-dom';
 
 // proteção
-import ProtectedRoute from "./ProtectedRoute";
-import PublicRoute from "./PublicRoute";
+import ProtectedRoute from './ProtectedRoute';
+import PublicRoute from './PublicRoute';
 
 // layout
-import AppLayout from "../layout/AppLayout";
+import AppLayout from '../layout/AppLayout';
 
 // páginas
-import Login from "../pages/login/Login";
-import Painel from "../pages/painel/Painel";
-import Alertas from "../pages/alertas/Alertas";
+import Login from '../pages/login/Login';
+import Painel from '../pages/painel/Painel';
+import Alertas from '../pages/alertas/Alertas';
 
 // (pode criar depois)
-import Caixa from "../pages/caixa/Caixa";
-import Produtos from "../pages/produtos/Produtos";
-import Estoque from "../pages/estoque/Estoque";
-import Pedidos from "../pages/pedidos/Pedidos";
-import Lojas from "../pages/lojas/Lojas";
-import Relatorios from "../pages/relatorios/Relatorios";
-import Perdas from "../pages/perdas/Perdas";
-import Config from "../pages/config/Config";
-import Historico from "../pages/historico/Historico";
+import Caixa from '../pages/caixa/Caixa';
+import Produtos from '../pages/produtos/Produtos';
+import Estoque from '../pages/estoque/Estoque';
+import Pedidos from '../pages/pedidos/Pedidos';
+import Lojas from '../pages/lojas/Lojas';
+import Relatorios from '../pages/relatorios/Relatorios';
+import Perdas from '../pages/perdas/Perdas';
+import Config from '../pages/config/Config';
+import Historico from '../pages/historico/Historico';
 
-import NotFound from "../components/notFound/NotFound";
-
+import NotFound from '../components/notFound/NotFound';
 
 export function AppRoutes() {
   return (
     <Routes>
-
       {/* 🔓 PÚBLICAS */}
       <Route element={<PublicRoute />}>
         <Route path="/" element={<Login />} />
@@ -38,7 +36,6 @@ export function AppRoutes() {
       {/* 🔐 PROTEGIDAS */}
       <Route element={<ProtectedRoute />}>
         <Route element={<AppLayout />}>
-
           <Route path="/painel" element={<Painel />} />
           <Route path="/alertas" element={<Alertas />} />
 
@@ -53,13 +50,11 @@ export function AppRoutes() {
           <Route path="/perdas" element={<Perdas />} />
           <Route path="/historico" element={<Historico />} />
           <Route path="/config" element={<Config />} />
-
         </Route>
       </Route>
 
       {/* 404 */}
       <Route path="*" element={<NotFound />} />
-
     </Routes>
   );
 }

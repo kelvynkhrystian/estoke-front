@@ -24,7 +24,7 @@
   --btn: #1b4332;
 }
 
-[data-theme="dark"] {
+[data-theme='dark'] {
   /* 🎨 BACKGROUNDS */
   --bg: #0f0f1a;
   --bg-secondary: #1a1a2e;
@@ -63,7 +63,7 @@ body {
   inset: 0;
   z-index: 0;
 
-  background-image: url("/src/assets/backgrounds/fundo2.png"); /* LIGHT */
+  background-image: url('/src/assets/backgrounds/fundo2.png'); /* LIGHT */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -74,30 +74,29 @@ body {
 
 /* overlay light */
 .app-background::after {
-  content: "";
+  content: '';
   position: absolute;
   inset: 0;
   background: rgba(255, 255, 255, 0.4);
 }
 
 /* 🌙 DARK MODE (AGORA USANDO SUA IMAGEM NOVA) */
-[data-theme="dark"] .app-background {
-  background-image: url("/src/assets/backgrounds/fundo4.png");
+[data-theme='dark'] .app-background {
+  background-image: url('/src/assets/backgrounds/fundo4.png');
 }
 
 /* overlay dark */
-[data-theme="dark"] .app-background::after {
+[data-theme='dark'] .app-background::after {
   background: rgba(0, 0, 0, 0.9);
 }
 
 /* 📱 MOBILE */
 @media (max-width: 768px) {
   .app-background {
-    background-image: url("/src/assets/backgrounds/fundo1.png");
+    background-image: url('/src/assets/backgrounds/fundo1.png');
   }
 
-  [data-theme="dark"] .app-background {
-    background-image: url("/src/assets/backgrounds/fundo3.png");
+  [data-theme='dark'] .app-background {
+    background-image: url('/src/assets/backgrounds/fundo3.png');
   }
 }
-

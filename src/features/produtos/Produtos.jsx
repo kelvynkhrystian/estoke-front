@@ -1,31 +1,30 @@
-import { useState, useEffect, useMemo, useCallback } from "react";
-import "./produtos.css";
-import { Trash2 } from "lucide-react";
-import toast from "react-hot-toast";
-import { api } from "../../api/api";
+import { useState, useEffect, useMemo, useCallback } from 'react';
+import './produtos.css';
+import { Trash2 } from 'lucide-react';
+import toast from 'react-hot-toast';
+import { api } from '../../api/api';
 
 // Componentes de Layout
-import HeaderProdutos from "../../components/produtos/HeaderProdutos";
-import TabsProdutos from "../../components/produtos/TabsProdutos";
-import SubTabsProdutos from "../../components/produtos/SubTabsProdutos";
+import HeaderProdutos from '../../components/produtos/HeaderProdutos';
+import TabsProdutos from '../../components/produtos/TabsProdutos';
+import SubTabsProdutos from '../../components/produtos/SubTabsProdutos';
 
 // Modais - Padronizando nomes para evitar erro de "not defined"
-import AddProduct from "./modais/addProduct";
-import EditProduct from "./modais/editProduct";
-import AddCategorie from "./modais/addCategorie";
-import EditCategory from "./modais/editCategorie"; 
-import AddInsumo from "./modais/addInsumo";
-import EditInsumo from "./modais/editInsumo";
-
+import AddProduct from './modais/addProduct';
+import EditProduct from './modais/editProduct';
+import AddCategorie from './modais/addCategorie';
+import EditCategory from './modais/editCategorie';
+import AddInsumo from './modais/addInsumo';
+import EditInsumo from './modais/editInsumo';
 
 // 🔥 REGRA CENTRAL: Proteção contra erro se category for undefined ou nulo
 const isInsumoCategory = (category) => {
-  return category?.name?.toLowerCase().includes("insumo") || false;
+  return category?.name?.toLowerCase().includes('insumo') || false;
 };
 
 export default function Produtos() {
-  const [tab, setTab] = useState("itens");
-  const [subTab, setSubTab] = useState("produtos");
+  const [tab, setTab] = useState('itens');
+  const [subTab, setSubTab] = useState('produtos');
 
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
@@ -44,10 +43,8 @@ export default function Produtos() {
   const [openAddInsumo, setOpenAddInsumo] = useState(false);
   const [openEditInsumo, setOpenEditInsumo] = useState(false);
   const [selectedInsumo, setSelectedInsumo] = useState(null);
-  
 
-  const [modalType, setModalType] = useState("produto");
-
+  const [modalType, setModalType] = useState('produto');
 
   // ============================
   // 🔥 FETCH DATA (Envolvido em useCallback para estabilidade)
@@ -55,17 +52,17 @@ export default function Produtos() {
   const fetchData = useCallback(async () => {
     try {
       const [catRes, prodRes, insRes] = await Promise.all([
-        api.get("/categories"),
-        api.get("/products"),
-        api.get("/insumos"),
+        api.get('/categories'),
+        api.get('/products'),
+        api.get('/insumos'),
       ]);
 
       setCategories(Array.isArray(catRes.data) ? catRes.data : []);
       setProducts(Array.isArray(prodRes.data) ? prodRes.data : []);
       setInsumos(Array.isArray(insRes.data) ? insRes.data : []);
     } catch (err) {
-      console.error("Erro ao carregar dados:", err);
-      toast.error("Erro ao carregar dados do servidor.");
+      console.error('Erro ao carregar dados:', err);
+      toast.error('Erro ao carregar dados do servidor.');
     } finally {
       setLoading(false);
     }
@@ -85,8 +82,6 @@ export default function Produtos() {
     });
   }, [products, categories]);
 
-
-
   const getTotalByCategory = (categoryId) => {
     return products.filter((p) => p.category_id === categoryId).length;
   };
@@ -95,43 +90,44 @@ export default function Produtos() {
   // 🔥 FUNÇÕES DE EXCLUSÃO
   // ============================
   const handleDeleteCategory = async (id) => {
-    if (!confirm("Tem certeza que deseja excluir esta categoria?")) return;
+    if (!confirm('Tem certeza que deseja excluir esta categoria?')) return;
 
     try {
       await api.delete(`/categories/${id}`);
-      toast.success("Categoria excluída!");
+      toast.success('Categoria excluída!');
       fetchData();
     } catch (err) {
       const message =
-        err.response?.data?.message || "Erro ao excluir. Verifique dependências.";
+        err.response?.data?.message ||
+        'Erro ao excluir. Verifique dependências.';
       toast.error(message);
     }
   };
 
   const handleDeleteProduct = async (id) => {
-    if (!confirm("Deseja realmente excluir este item?")) return;
+    if (!confirm('Deseja realmente excluir este item?')) return;
 
     try {
       await api.delete(`/products/${id}`);
-      toast.success("Item excluído!");
+      toast.success('Item excluído!');
       fetchData();
     } catch (error) {
       const message =
-        error.response?.data?.message || "Erro ao excluir o item.";
+        error.response?.data?.message || 'Erro ao excluir o item.';
       toast.error(message);
     }
   };
 
   const handleDeleteInsumo = async (id) => {
-    if (!confirm("Deseja realmente excluir este insumo?")) return;
+    if (!confirm('Deseja realmente excluir este insumo?')) return;
 
     try {
       await api.delete(`/insumos/${id}`);
-      toast.success("Insumo excluído!");
+      toast.success('Insumo excluído!');
       fetchData();
     } catch (error) {
       const message =
-        error.response?.data?.message || "Erro ao excluir o insumo.";
+        error.response?.data?.message || 'Erro ao excluir o insumo.';
       toast.error(message);
     }
   };
@@ -150,18 +146,18 @@ export default function Produtos() {
 
       <TabsProdutos tab={tab} setTab={setTab} />
 
-      {tab === "itens" && (
+      {tab === 'itens' && (
         <SubTabsProdutos subTab={subTab} setSubTab={setSubTab} />
       )}
 
       <div className="products-content">
         {/* SEÇÃO: PRODUTOS */}
-        {tab === "itens" && subTab === "produtos" && (
+        {tab === 'itens' && subTab === 'produtos' && (
           <>
             <button
               className="btn-primary"
               onClick={() => {
-                setModalType("produto");
+                setModalType('produto');
                 setOpenAddProduct(true);
               }}
             >
@@ -183,20 +179,25 @@ export default function Produtos() {
                   <tr
                     key={p.id}
                     onDoubleClick={() => {
-                      setModalType("produto");
+                      setModalType('produto');
                       setSelectedProduct(p);
                       setOpenEditProduct(true);
                     }}
                   >
                     <td>{p.id}</td>
-                    <td><strong>{p.name}</strong></td>
                     <td>
-                      R$ {p.sale_price ? Number(p.sale_price).toFixed(2) : "0.00"}
+                      <strong>{p.name}</strong>
                     </td>
-                    <td><strong>{p.min_stock}</strong></td>
+                    <td>
+                      R${' '}
+                      {p.sale_price ? Number(p.sale_price).toFixed(2) : '0.00'}
+                    </td>
+                    <td>
+                      <strong>{p.min_stock}</strong>
+                    </td>
                     <td style={{ textAlign: 'center' }}>
-                      <button 
-                        className="btn-icon-delete" 
+                      <button
+                        className="btn-icon-delete"
                         onClick={(e) => {
                           e.stopPropagation();
                           handleDeleteProduct(p.id);
@@ -213,7 +214,7 @@ export default function Produtos() {
         )}
 
         {/* SEÇÃO: INSUMOS */}
-        {tab === "itens" && subTab === "insumos" && (
+        {tab === 'itens' && subTab === 'insumos' && (
           <>
             <button
               className="btn-primary"
@@ -244,12 +245,16 @@ export default function Produtos() {
                     }}
                   >
                     <td>{p.id}</td>
-                    <td><strong>{p.name}</strong></td>
-                    <td>{p.unit || "N/A"}</td>
-                    <td><strong>{p.min_stock}</strong></td>
+                    <td>
+                      <strong>{p.name}</strong>
+                    </td>
+                    <td>{p.unit || 'N/A'}</td>
+                    <td>
+                      <strong>{p.min_stock}</strong>
+                    </td>
                     <td style={{ textAlign: 'center' }}>
-                      <button 
-                        className="btn-icon-delete" 
+                      <button
+                        className="btn-icon-delete"
                         onClick={(e) => {
                           e.stopPropagation();
                           handleDeleteInsumo(p.id);
@@ -266,7 +271,7 @@ export default function Produtos() {
         )}
 
         {/* SEÇÃO: CATEGORIAS */}
-        {tab === "categorias" && (
+        {tab === 'categorias' && (
           <>
             <button
               className="btn-primary"
@@ -282,7 +287,7 @@ export default function Produtos() {
                   <th>Nome</th>
                   <th>Status</th>
                   <th>Produtos</th>
-                  <th style={{ textAlign: "right" }}>Ações</th>
+                  <th style={{ textAlign: 'right' }}>Ações</th>
                 </tr>
               </thead>
               <tbody>
@@ -295,18 +300,26 @@ export default function Produtos() {
                     }}
                   >
                     <td>{cat.id}</td>
-                    <td><strong>{cat.name}</strong></td>
                     <td>
-                      <span className={`status ${cat.is_active ? "active" : "inactive"}`}>
-                        {cat.is_active ? "Ativo" : "Inativo"}
+                      <strong>{cat.name}</strong>
+                    </td>
+                    <td>
+                      <span
+                        className={`status ${cat.is_active ? 'active' : 'inactive'}`}
+                      >
+                        {cat.is_active ? 'Ativo' : 'Inativo'}
                       </span>
                     </td>
                     <td>{getTotalByCategory(cat.id)}</td>
-                    <td style={{ textAlign: "right" }}>
-                      <button 
-                        className="btn-delete" 
+                    <td style={{ textAlign: 'right' }}>
+                      <button
+                        className="btn-delete"
                         onClick={() => handleDeleteCategory(cat.id)}
-                        style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}
+                        style={{
+                          background: 'transparent',
+                          border: 'none',
+                          cursor: 'pointer',
+                        }}
                       >
                         <Trash2 size={18} color="#ff4d4d" />
                       </button>
@@ -319,14 +332,14 @@ export default function Produtos() {
         )}
 
         {/* --- MODAIS --- */}
-        
+
         {/* Modal de Adicionar Produto/Insumo */}
         <AddProduct
           open={openAddProduct}
           onClose={() => setOpenAddProduct(false)}
           categories={categories}
-          onRefresh={fetchData} 
-          type={modalType}     
+          onRefresh={fetchData}
+          type={modalType}
         />
 
         {/* Modal de Editar Produto/Insumo */}
@@ -336,7 +349,7 @@ export default function Produtos() {
           product={selectedProduct}
           categories={categories}
           onRefresh={fetchData}
-          type={modalType} 
+          type={modalType}
         />
 
         {/* Modal de Adicionar Categoria */}
@@ -366,7 +379,6 @@ export default function Produtos() {
           insumo={selectedInsumo}
           onRefresh={fetchData}
         />
-
       </div>
     </div>
   );

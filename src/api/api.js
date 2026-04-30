@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 
 export const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
@@ -6,7 +6,7 @@ export const api = axios.create({
 
 // interceptador (MUITO IMPORTANTE)
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem('token');
 
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
@@ -20,18 +20,18 @@ api.interceptors.response.use(
   (error) => {
     const status = error.response?.status;
 
-    console.log("🔥 interceptor");
-    console.log("status:", status);
+    console.log('🔥 interceptor');
+    console.log('status:', status);
 
     if (status === 401) {
-      console.log("🔒 Token expirado - fazendo logout");
+      console.log('🔒 Token expirado - fazendo logout');
 
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
 
-      window.location.href = "/";
+      window.location.href = '/';
     }
 
     return Promise.reject(error);
-  }
+  },
 );

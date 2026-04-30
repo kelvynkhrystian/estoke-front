@@ -1,16 +1,16 @@
-import { useState, useEffect } from "react";
-import { X, Save } from "lucide-react";
-import toast from "react-hot-toast";
-import { updateStore } from "../../../services/storeService";
+import { useState, useEffect } from 'react';
+import { X, Save } from 'lucide-react';
+import toast from 'react-hot-toast';
+import { updateStore } from '../../../services/storeService';
 
 export default function EditLoja({ open, onClose, store, onRefresh }) {
-  const [name, setName] = useState("");
+  const [name, setName] = useState('');
   const [isActive, setIsActive] = useState(1);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (open && store) {
-      setName(store.name || "");
+      setName(store.name || '');
       setIsActive(store.is_active ? 1 : 0);
     }
   }, [open, store]);
@@ -19,7 +19,7 @@ export default function EditLoja({ open, onClose, store, onRefresh }) {
 
   const handleUpdate = async () => {
     if (!name.trim()) {
-      toast.error("O nome da loja é obrigatório");
+      toast.error('O nome da loja é obrigatório');
       return;
     }
 
@@ -30,13 +30,13 @@ export default function EditLoja({ open, onClose, store, onRefresh }) {
         is_active: Number(isActive),
       });
 
-      toast.success("Loja atualizada com sucesso!");
+      toast.success('Loja atualizada com sucesso!');
       onRefresh();
       onClose();
     } catch (error) {
       const message =
-        error.response?.data?.message || error.message || "Erro ao atualizar";
-      toast.error("Erro: " + message);
+        error.response?.data?.message || error.message || 'Erro ao atualizar';
+      toast.error('Erro: ' + message);
     } finally {
       setLoading(false);
     }
@@ -68,9 +68,9 @@ export default function EditLoja({ open, onClose, store, onRefresh }) {
             <button
               type="button"
               onClick={() => setIsActive(isActive === 1 ? 0 : 1)}
-              className={`status-toggle ${isActive ? "active" : "inactive"}`}
+              className={`status-toggle ${isActive ? 'active' : 'inactive'}`}
             >
-              {isActive ? "Ativa no Sistema" : "Inativa / Oculta"}
+              {isActive ? 'Ativa no Sistema' : 'Inativa / Oculta'}
             </button>
           </div>
 
@@ -80,7 +80,7 @@ export default function EditLoja({ open, onClose, store, onRefresh }) {
             disabled={loading}
           >
             <Save size={18} />
-            {loading ? "Atualizando..." : "Salvar Alterações"}
+            {loading ? 'Atualizando...' : 'Salvar Alterações'}
           </button>
         </div>
       </div>

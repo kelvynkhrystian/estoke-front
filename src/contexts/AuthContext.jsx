@@ -1,5 +1,5 @@
-import { createContext, useState, useEffect } from "react";
-import { api } from "../api/api";
+import { createContext, useState, useEffect } from 'react';
+import { api } from '../api/api';
 
 export const AuthContext = createContext();
 
@@ -8,14 +8,14 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    const userStorage = localStorage.getItem("user");
+    const token = localStorage.getItem('token');
+    const userStorage = localStorage.getItem('user');
 
     if (token && userStorage) {
       try {
         setUser(JSON.parse(userStorage));
       } catch {
-        localStorage.removeItem("user");
+        localStorage.removeItem('user');
       }
     }
 
@@ -24,12 +24,12 @@ export function AuthProvider({ children }) {
 
   const login = async (email, password) => {
     try {
-      const res = await api.post("/auth/login", { email, password });
+      const res = await api.post('/auth/login', { email, password });
 
       const { accessToken, user } = res.data;
 
-      localStorage.setItem("token", accessToken);
-      localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem('token', accessToken);
+      localStorage.setItem('user', JSON.stringify(user));
 
       setUser(user);
     } catch (error) {
@@ -38,8 +38,8 @@ export function AuthProvider({ children }) {
   };
 
   const logout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
 
     setUser(null);
   };

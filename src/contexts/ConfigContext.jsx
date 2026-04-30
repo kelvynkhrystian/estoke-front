@@ -1,5 +1,5 @@
-import { createContext, useEffect, useState } from "react";
-import { getConfig } from "../services/configService";
+import { createContext, useEffect, useState } from 'react';
+import { getConfig } from '../services/configService';
 
 export const ConfigContext = createContext();
 
@@ -7,8 +7,8 @@ const setFavicon = (url) => {
   let link = document.querySelector("link[rel~='icon']");
 
   if (!link) {
-    link = document.createElement("link");
-    link.rel = "icon";
+    link = document.createElement('link');
+    link.rel = 'icon';
     document.head.appendChild(link);
   }
 
@@ -35,9 +35,8 @@ export function ConfigProvider({ children }) {
           const faviconUrl = `${import.meta.env.VITE_API_URL}${data.logo_url}`;
           setFavicon(faviconUrl);
         }
-
       } catch (err) {
-        console.error("Erro ao carregar config", err);
+        console.error('Erro ao carregar config', err);
       }
     };
 

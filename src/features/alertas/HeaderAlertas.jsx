@@ -1,5 +1,5 @@
-import { ArrowLeft, Bell } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { ArrowLeft, Bell } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 export default function HeaderAlertas() {
   const navigate = useNavigate();

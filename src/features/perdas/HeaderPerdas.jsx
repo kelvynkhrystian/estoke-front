@@ -1,5 +1,5 @@
-import { ArrowLeft, AlertTriangle } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { ArrowLeft, AlertTriangle } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 export default function HeaderPerdas() {
   const navigate = useNavigate();

@@ -1,5 +1,5 @@
-import { ArrowLeft, Wallet } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { ArrowLeft, Wallet } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 export default function HeaderCaixa() {
   const navigate = useNavigate();

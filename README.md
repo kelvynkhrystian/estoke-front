@@ -25,9 +25,9 @@ Frontend da aplicação de gerenciamento de estoque **Estoke**, desenvolvido com
 
 **Feature-based Architecture** + separação por camadas:
 
-- Component-based UI  
-- Service Layer  
-- Context API  
+- Component-based UI
+- Service Layer
+- Context API
 
 ---
 
@@ -67,8 +67,8 @@ Axios configurado com interceptors para:
 
 ## 🧪 Validação
 
-- Zod  
-- React Hook Form  
+- Zod
+- React Hook Form
 
 ---
 
@@ -99,9 +99,9 @@ npm run dev
 
 Planejado:
 
-- Jest  
-- React Testing Library  
-- Cypress  
+- Jest
+- React Testing Library
+- Cypress
 
 ---
 
@@ -128,4 +128,3 @@ Planejado:
 ## 👨‍💻 Autor
 
 **Kelvyn Khrystian**
-

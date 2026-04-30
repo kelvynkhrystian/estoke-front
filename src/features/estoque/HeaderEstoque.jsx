@@ -1,5 +1,5 @@
-import { ArrowLeft, Boxes } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { ArrowLeft, Boxes } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 export default function HeaderEstoque() {
   const navigate = useNavigate();

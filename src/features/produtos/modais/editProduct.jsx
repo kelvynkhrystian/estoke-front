@@ -1,11 +1,17 @@
+import { useState, useMemo, useEffect } from 'react';
+import { X, Save } from 'lucide-react';
+import toast from 'react-hot-toast';
+import { getInsumos } from '../../../services/insumoService';
+import './modals.css';
 
-import { useState, useMemo, useEffect } from "react";
-import { X, Save } from "lucide-react";
-import toast from "react-hot-toast";
-import { getInsumos } from "../../../services/insumoService";
-import "./modals.css";
-
-export default function EditProduct({ open, onClose, product, categories, onRefresh, type }) {
+export default function EditProduct({
+  open,
+  onClose,
+  product,
+  categories,
+  onRefresh,
+  type,
+}) {
   const [loading, setLoading] = useState(false);
   const [useInsumos, setUseInsumos] = useState(false);
   const [insumosList, setInsumosList] = useState([]);
@@ -16,15 +22,12 @@ export default function EditProduct({ open, onClose, product, categories, onRefr
       const res = await getInsumos();
       setInsumosList(res.data);
     } catch {
-      toast.error("Erro ao carregar insumos");
+      toast.error('Erro ao carregar insumos');
     }
   };
 
   const addInsumoRow = () => {
-    setInsumosData((prev) => [
-      ...prev,
-      { insumo_id: "", quantity: "" }
-    ]);
+    setInsumosData((prev) => [...prev, { insumo_id: '', quantity: '' }]);
   };
 
   const removeInsumoRow = (index) => {
@@ -38,14 +41,14 @@ export default function EditProduct({ open, onClose, product, categories, onRefr
   };
 
   const [form, setForm] = useState({
-    name: "",
-    sku: "",
-    unit: "und",
-    cost_price: "",
-    sale_price: "",
-    resale_price: "",
-    min_stock: "",
-    category_id: "",
+    name: '',
+    sku: '',
+    unit: 'und',
+    cost_price: '',
+    sale_price: '',
+    resale_price: '',
+    min_stock: '',
+    category_id: '',
     is_active: 1,
   });
 
@@ -53,28 +56,31 @@ export default function EditProduct({ open, onClose, product, categories, onRefr
   useEffect(() => {
     if (open && product) {
       setForm({
-        name: product.name || "",
-        sku: product.sku || "",
-        unit: product.unit || "und",
+        name: product.name || '',
+        sku: product.sku || '',
+        unit: product.unit || 'und',
         // Garantimos que valores numéricos vazios virem string vazia para o input
-        cost_price: product.cost_price ?? "",
-        sale_price: product.sale_price ?? "",
-        resale_price: product.resale_price ?? "",
-        min_stock: product.min_stock ?? "",
-        category_id: product.category_id || "",
+        cost_price: product.cost_price ?? '',
+        sale_price: product.sale_price ?? '',
+        resale_price: product.resale_price ?? '',
+        min_stock: product.min_stock ?? '',
+        category_id: product.category_id || '',
         is_active: product.is_active ? 1 : 0,
       });
     }
     // 🔥 SE O PRODUTO TEM INSUMOS
-    if (product && Array.isArray(product.insumos) && product.insumos.length > 0) {
-      
+    if (
+      product &&
+      Array.isArray(product.insumos) &&
+      product.insumos.length > 0
+    ) {
       setUseInsumos(true);
 
       setInsumosData(
         product.insumos.map((i) => ({
           insumo_id: i.insumo_id,
-          quantity: i.quantity
-        }))
+          quantity: i.quantity,
+        })),
       );
     }
   }, [open, product]);
@@ -87,9 +93,9 @@ export default function EditProduct({ open, onClose, product, categories, onRefr
 
   // 2. FILTRO DE CATEGORIAS: Mantém a lógica de separar Produto de Insumo
   const filteredCategories = useMemo(() => {
-    return categories.filter(cat => {
-      const isIns = cat.name.toLowerCase().includes("insumo");
-      return type === "insumo" ? isIns : !isIns;
+    return categories.filter((cat) => {
+      const isIns = cat.name.toLowerCase().includes('insumo');
+      return type === 'insumo' ? isIns : !isIns;
     });
   }, [categories, type]);
 
@@ -110,20 +116,20 @@ export default function EditProduct({ open, onClose, product, categories, onRefr
       return;
     }
     if (!form.category_id) {
-      toast.error("Selecione uma categoria");
+      toast.error('Selecione uma categoria');
       return;
     }
 
     setLoading(true);
     try {
-      const token = localStorage.getItem("token");
-      const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
+      const token = localStorage.getItem('token');
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
       const response = await fetch(`${API_URL}/products/${product.id}`, {
-        method: "PUT",
+        method: 'PUT',
         headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           ...form,
@@ -148,15 +154,17 @@ export default function EditProduct({ open, onClose, product, categories, onRefr
       });
 
       if (response.ok) {
-        toast.success(`${type === "insumo" ? "Insumo" : "Produto"} atualizado!`);
-        onRefresh(); 
+        toast.success(
+          `${type === 'insumo' ? 'Insumo' : 'Produto'} atualizado!`,
+        );
+        onRefresh();
         onClose();
       } else {
         const errorData = await response.json();
-        throw new Error(errorData.message || "Erro ao atualizar");
+        throw new Error(errorData.message || 'Erro ao atualizar');
       }
     } catch (error) {
-      toast.error("Erro: " + error.message);
+      toast.error('Erro: ' + error.message);
     } finally {
       setLoading(false);
     }
@@ -167,8 +175,10 @@ export default function EditProduct({ open, onClose, product, categories, onRefr
       <div className="modal-box glass">
         <div className="modal-header">
           <div>
-            <h2>Editar {type === "insumo" ? "Insumo" : "Produto"}</h2>
-            <p className="modal-subtitle">ID: {product.id} • Alterar informações do item</p>
+            <h2>Editar {type === 'insumo' ? 'Insumo' : 'Produto'}</h2>
+            <p className="modal-subtitle">
+              ID: {product.id} • Alterar informações do item
+            </p>
           </div>
           <button onClick={onClose} className="modal-close">
             <X size={18} />
@@ -177,7 +187,7 @@ export default function EditProduct({ open, onClose, product, categories, onRefr
 
         <div className="modal-form">
           <div className="form-group">
-            <label>Nome do {type === "insumo" ? "Insumo" : "Produto"}</label>
+            <label>Nome do {type === 'insumo' ? 'Insumo' : 'Produto'}</label>
             <input
               name="name"
               value={form.name}
@@ -257,7 +267,9 @@ export default function EditProduct({ open, onClose, product, categories, onRefr
           </div>
 
           <div className="form-group">
-            <label>Categoria de {type === "insumo" ? "Insumos" : "Venda"}</label>
+            <label>
+              Categoria de {type === 'insumo' ? 'Insumos' : 'Venda'}
+            </label>
             <select
               name="category_id"
               value={form.category_id}
@@ -278,10 +290,10 @@ export default function EditProduct({ open, onClose, product, categories, onRefr
               <button
                 type="button"
                 onClick={toggleActive}
-                className={`status-toggle ${form.is_active ? "active" : "inactive"}`}
+                className={`status-toggle ${form.is_active ? 'active' : 'inactive'}`}
               >
                 <div className="dot"></div>
-                {form.is_active ? "Ativo no Sistema" : "Inativo / Oculto"}
+                {form.is_active ? 'Ativo no Sistema' : 'Inativo / Oculto'}
               </button>
             </div>
 
@@ -290,24 +302,33 @@ export default function EditProduct({ open, onClose, product, categories, onRefr
               <button
                 type="button"
                 onClick={() => setUseInsumos((prev) => !prev)}
-                className={`status-toggle ${useInsumos ? "active" : "inactive"}`}
+                className={`status-toggle ${useInsumos ? 'active' : 'inactive'}`}
               >
-                {useInsumos ? "SIM" : "NÃO"}
+                {useInsumos ? 'SIM' : 'NÃO'}
               </button>
             </div>
 
             {useInsumos && (
               <div className="insumos-container">
                 {insumosData.map((item, index) => {
-                  const selected = insumosList.find(i => i.id === item.insumo_id);
+                  const selected = insumosList.find(
+                    (i) => i.id === item.insumo_id,
+                  );
 
                   return (
-                    <div key={index} className="form-row ingredientes-box" style={{ alignItems: "center" }}>
-
+                    <div
+                      key={index}
+                      className="form-row ingredientes-box"
+                      style={{ alignItems: 'center' }}
+                    >
                       <select
                         value={item.insumo_id}
                         onChange={(e) =>
-                          handleInsumoChange(index, "insumo_id", Number(e.target.value))
+                          handleInsumoChange(
+                            index,
+                            'insumo_id',
+                            Number(e.target.value),
+                          )
                         }
                       >
                         <option value="">Selecione</option>
@@ -324,25 +345,24 @@ export default function EditProduct({ open, onClose, product, categories, onRefr
                         placeholder="Qtd"
                         value={item.quantity}
                         onChange={(e) =>
-                          handleInsumoChange(index, "quantity", e.target.value)
+                          handleInsumoChange(index, 'quantity', e.target.value)
                         }
                       />
 
-                      <input value={selected?.unit || ""} disabled />
+                      <input value={selected?.unit || ''} disabled />
 
                       <button
                         type="button"
                         onClick={() => removeInsumoRow(index)}
                         style={{
-                          background: "transparent",
-                          border: "none",
-                          cursor: "pointer",
-                          color: "#ff4d4f"
+                          background: 'transparent',
+                          border: 'none',
+                          cursor: 'pointer',
+                          color: '#ff4d4f',
                         }}
                       >
                         <X size={25} />
                       </button>
-
                     </div>
                   );
                 })}
@@ -353,13 +373,13 @@ export default function EditProduct({ open, onClose, product, categories, onRefr
               </div>
             )}
 
-            <button 
-              className="modal-button primary" 
+            <button
+              className="modal-button primary"
               onClick={handleUpdate}
               disabled={loading}
             >
-              <Save size={18} /> 
-              {loading ? "Salvando..." : "Salvar Alterações"}
+              <Save size={18} />
+              {loading ? 'Salvando...' : 'Salvar Alterações'}
             </button>
           </div>
         </div>

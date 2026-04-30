@@ -36,7 +36,7 @@
 }
 
 /* DARK */
-[data-theme="dark"] .modal-box {
+[data-theme='dark'] .modal-box {
   background: var(--bg-secondary);
   border: 1px solid var(--border);
 
@@ -220,11 +220,9 @@
   transition: 0.2s;
 }
 
-.modal-inline-button svg{
+.modal-inline-button svg {
   margin-right: 10px;
 }
-
-
 
 /* =========================
    ANIMAÇÃO
@@ -240,7 +238,6 @@
   }
 }
 
-
 label {
   margin-left: 5px;
   font-weight: 500;
@@ -251,7 +248,7 @@ label {
   margin-top: 10px;
 }
 
-.status-container button{
+.status-container button {
   margin-left: 10px;
 }
 
@@ -282,19 +279,16 @@ label {
 }
 
 .insumos-container .modal-button {
- margin: 25px 0;
- background-color: var(--dark);
+  margin: 25px 0;
+  background-color: var(--dark);
 }
 
-.addcodigo div{
+.addcodigo div {
   width: 50%;
 }
-
-
 
 @media (max-width: 768px) {
   .categorias-box-add-product {
     width: 100%;
   }
 }
-

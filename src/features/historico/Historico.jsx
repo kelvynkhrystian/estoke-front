@@ -1,4 +1,4 @@
-import HeaderHistorico from "./HeaderHistorico";
+import HeaderHistorico from './HeaderHistorico';
 
 export default function Historico() {
   return (
