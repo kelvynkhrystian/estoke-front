@@ -21,7 +21,7 @@ export default function Estoque() {
   const [modalMovimentacao, setModalMovimentacao] = useState(false);
   const [modalTransferencia, setModalTransferencia] = useState(false);
   const [itens, setItens] = useState([]);
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(true);
   const [selectedStore, setSelectedStore] = useState(null);
   const [lojas, setLojas] = useState([]);
   const [produtos, setProdutos] = useState([]);
@@ -35,7 +35,7 @@ export default function Estoque() {
       } catch (err) {
         console.error(err);
       } finally {
-        setLoading(false);
+        // setLoading(false);
       }
     }
 
@@ -53,7 +53,11 @@ export default function Estoque() {
 
   useEffect(() => {
     fetchItensBase();
-  }, [abaAtiva]);
+  });
+
+  // useEffect(() => {
+  //   fetchItensBase();
+  // }, [abaAtiva]);
 
   const fetchItensBase = async () => {
     if (abaAtiva === 'produtos') {
@@ -256,10 +260,10 @@ export default function Estoque() {
     }
   }
 
-  const opcoesItens = itens.map((item) => ({
-    id: item.id,
-    nome: item.nome,
-  }));
+  // const opcoesItens = itens.map((item) => ({
+  //   id: item.id,
+  //   nome: item.nome,
+  // }));
 
   return (
     <>
@@ -367,8 +371,8 @@ export default function Estoque() {
                 </tr>
               ) : (
                 itensAtivos.map((item) => {
-                  const abaixoMinimo =
-                    Number(item.estoque) < Number(item.minimo);
+                  // const abaixoMinimo =
+                  //   Number(item.estoque) < Number(item.minimo);
 
                   return (
                     <tr key={`${item.tipo}-${item.id}-${item.store_id}`}>
