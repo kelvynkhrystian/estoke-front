@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { X, Save } from 'lucide-react';
 import toast from 'react-hot-toast';
-import { updateStore } from '../../../services/storeService';
+import { updateStore } from '../services/storeService';
 
 export default function EditLoja({ open, onClose, store, onRefresh }) {
   const [name, setName] = useState('');

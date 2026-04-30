@@ -1,4 +1,4 @@
-import HeaderAlertas from './HeaderAlertas';
+import HeaderAlertas from '../components/HeaderAlertas';
 
 export default function Alertas() {
   return (

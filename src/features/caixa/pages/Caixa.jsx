@@ -1,4 +1,4 @@
-import HeaderCaixa from './HeaderCaixa';
+import HeaderCaixa from '../components/HeaderCaixa';
 
 export default function Caixa() {
   return (

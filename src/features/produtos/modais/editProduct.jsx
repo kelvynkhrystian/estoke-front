@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect } from 'react';
 import { X, Save } from 'lucide-react';
 import toast from 'react-hot-toast';
-import { getInsumos } from '../../../services/insumoService';
+import { getInsumos } from '../services/insumoService';
 import './modals.css';
 
 export default function EditProduct({

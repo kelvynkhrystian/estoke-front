@@ -1,12 +1,8 @@
 import { useMemo, useState, useEffect } from 'react';
-import {
-  getStock,
-  addMovement,
-  transferStock,
-} from '../../services/stockService';
-import { getProducts } from '../../services/productService';
-import { getInsumos } from '../../services/insumoService';
-import HeaderEstoque from './HeaderEstoque';
+import { getStock, addMovement, transferStock } from '../services/stockService';
+import { getProducts } from '../../produtos/services/productService';
+import { getInsumos } from '../../../services/insumoService';
+import HeaderEstoque from '../components/HeaderEstoque';
 import { getStores } from '../../services/storeService';
 import './estoque.css';
 import {

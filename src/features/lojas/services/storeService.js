@@ -1,4 +1,4 @@
-import { api } from '../api/api';
+import { api } from '../../../api/api';
 
 export const getStores = () => api.get('/stores');
 export const createStore = (data) => api.post('/stores', data);

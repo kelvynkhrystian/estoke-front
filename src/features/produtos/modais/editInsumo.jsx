@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { X, Save } from 'lucide-react';
 import toast from 'react-hot-toast';
-import { updateInsumo } from '../../../services/insumoService';
+import { updateInsumo } from '../services/insumoService';
 
 const UNITS = ['kg', 'g', 'l', 'ml', 'und'];
 

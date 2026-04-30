@@ -1,10 +1,10 @@
 import './login.css';
 
 import { useState, useEffect } from 'react';
-import { useAuth } from '../../hooks/useAuth';
+import { useAuth } from '../../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 
-import { getConfig } from '../../services/configService';
+import { getConfig } from '../../../services/configService';
 import ThemeToggle from '../../components/theme/ThemeToggle';
 import { Mail, Lock } from 'lucide-react';
 import Logo from '../../assets/logo/logo.png';

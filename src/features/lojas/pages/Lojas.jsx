@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+// import { useEffect, useState } from 'react';
 import { Trash2 } from 'lucide-react';
-import HeaderLojas from './HeaderLojas';
-import AddLoja from './modais/AddLoja';
-import EditLoja from './modais/EditLoja';
-import { getStores, deleteStore } from '../../services/storeService';
+import HeaderLojas from '../components/HeaderLojas';
+import AddLoja from '../modais/AddLoja';
+import EditLoja from '../modais/EditLoja';
+import { getStores, deleteStore } from '../services/storeService';
 
 import './lojas.css';
 
@@ -26,9 +27,9 @@ export default function Lojas() {
     }
   };
 
-  useEffect(() => {
-    loadStores();
-  }, []);
+  // useEffect(() => {
+  //   loadStores();
+  // }, []);
 
   // 🗑️ DELETE
   const handleDeleteStore = async (id) => {
