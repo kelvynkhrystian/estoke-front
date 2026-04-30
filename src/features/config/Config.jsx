@@ -24,7 +24,7 @@ export default function Config() {
   const [appName, setAppName] = useState('');
   const [slogan, setSlogan] = useState('');
   const [logo, setLogo] = useState(null);
-  const [logoUrl, setLogoUrl] = useState('');
+  // const [logoUrl, setLogoUrl] = useState('');
   const [preview, setPreview] = useState('');
 
   // USUÁRIO
@@ -62,7 +62,7 @@ export default function Config() {
 
       setAppName(data.app_name || '');
       setSlogan(data.slogan || '');
-      setLogoUrl(data.logo_url || '');
+      // setLogoUrl(data.logo_url || '');
       setPreview(data.logo_url ? `${API_URL}${data.logo_url}` : '');
     } catch (error) {
       console.error(error);
@@ -127,7 +127,7 @@ export default function Config() {
       alert('Configurações atualizadas com sucesso!');
 
       setLogo(null);
-      setLogoUrl(data.logo_url || '');
+      // setLogoUrl(data.logo_url || '');
       setPreview(
         data.logo_url ? `${API_URL}${data.logo_url}?t=${Date.now()}` : preview,
       );

@@ -17,18 +17,18 @@ const appConfig = {
 };
 
 // setar favicon
-const setFavicon = (url) => {
-  const existing = document.querySelector("link[rel~='icon']");
+// const setFavicon = (url) => {
+//   const existing = document.querySelector("link[rel~='icon']");
 
-  if (existing) {
-    existing.href = url;
-  } else {
-    const link = document.createElement('link');
-    link.rel = 'icon';
-    link.href = url;
-    document.head.appendChild(link);
-  }
-};
+//   if (existing) {
+//     existing.href = url;
+//   } else {
+//     const link = document.createElement('link');
+//     link.rel = 'icon';
+//     link.href = url;
+//     document.head.appendChild(link);
+//   }
+// };
 
 export default function Login() {
   const { login } = useAuth();
@@ -62,7 +62,7 @@ export default function Login() {
       await login(email, password);
       navigate('/painel');
     } catch (err) {
-      alert('Email ou senha inválidos');
+      alert('Email ou senha inválidos', err);
     } finally {
       setLoading(false);
     }
