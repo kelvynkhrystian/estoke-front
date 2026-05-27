@@ -1,4 +1,4 @@
-import HeaderPerdas from './perdas';
+import HeaderPerdas from '../components/HeaderPerdas';
 
 export default function Perdas() {
   return (

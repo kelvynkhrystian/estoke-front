@@ -1,3 +1,4 @@
+// import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Settings,
@@ -12,7 +13,7 @@ import {
   ShoppingCart,
   History,
 } from 'lucide-react';
-import { useState } from 'react';
+
 import './painel.css';
 
 const resumoCards = [
@@ -31,10 +32,10 @@ const resumoCards = [
 ];
 
 const atalhos = [
-  { title: 'Caixa', icon: Wallet, to: '/caixa' },
+  // { title: 'Caixa', icon: Wallet, to: '/caixa' },
   { title: 'Produtos', icon: Package, to: '/produtos' },
   { title: 'Estoque', icon: Boxes, to: '/estoque' },
-  { title: 'Pedidos', icon: ClipboardList, to: '/pedidos' },
+  // { title: 'Pedidos', icon: ClipboardList, to: '/pedidos' },
   { title: 'Lojas', icon: Store, to: '/lojas' },
   { title: 'Perdas', icon: TriangleAlert, to: '/perdas' },
   { title: 'Relatórios', icon: FileText, to: '/relatorios' },
@@ -51,7 +52,7 @@ const alertas = [
 ];
 
 export default function Painel() {
-  const [menuOpen, setMenuOpen] = useState(false);
+  // const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <div className="painel-page">
