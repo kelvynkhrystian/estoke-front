@@ -1,4 +1,4 @@
-import HeaderPedidos from './HeaderPedidos';
+import HeaderPedidos from './pedidos';
 
 export default function Pedidos() {
   return (

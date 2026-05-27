@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Menu, Settings, LogOut, TriangleAlert, Sun, Moon } from 'lucide-react';
 import './header.css';
 
-import { getConfig } from '../../../services/configService';
+import { getConfig } from '../../../features/config/services/configService';
 import { useAuth } from '../../../hooks/useAuth';
 import { useTheme } from '../../../hooks/useTheme';
 

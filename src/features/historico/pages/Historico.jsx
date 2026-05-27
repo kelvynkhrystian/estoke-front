@@ -1,4 +1,4 @@
-import HeaderHistorico from './HeaderHistorico';
+import HeaderHistorico from '../components/HeaderHistorico';
 
 export default function Historico() {
   return (

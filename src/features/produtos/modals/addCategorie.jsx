@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { X, Save } from 'lucide-react';
 import toast from 'react-hot-toast';
-import { createCategory } from '../../../services/categoryService';
+import { createCategory } from '../../../features/produtos/services/categoryService';
 
 export default function AddCategory({ open, onClose, onRefresh }) {
   const [name, setName] = useState('');

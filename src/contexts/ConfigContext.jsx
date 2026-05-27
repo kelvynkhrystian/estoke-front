@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from 'react';
-import { getConfig } from '../services/configService';
+import { getConfig } from '../features/config/services/configService';
 
 export const ConfigContext = createContext();
 

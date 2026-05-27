@@ -5,17 +5,17 @@ import toast from 'react-hot-toast';
 import { api } from '../../../api/api';
 
 // Componentes de Layout
-import HeaderProdutos from '../../components/produtos/HeaderProdutos';
-import TabsProdutos from '../../components/produtos/TabsProdutos';
-import SubTabsProdutos from '../../components/produtos/SubTabsProdutos';
+import HeaderProdutos from '../components/produtos/HeaderProdutos';
+import TabsProdutos from '../components/produtos/TabsProdutos';
+import SubTabsProdutos from '../components/produtos/SubTabsProdutos';
 
 // Modais - Padronizando nomes para evitar erro de "not defined"
-import AddProduct from '../modais/addProduct';
-import EditProduct from '../modais/editProduct';
-import AddCategorie from '../modais/addCategorie';
-import EditCategory from '../modais/editCategorie';
-import AddInsumo from '../modais/addInsumo';
-import EditInsumo from '../modais/editInsumo';
+import AddProduct from '../modals/addProduct';
+import EditProduct from '../modals/editProduct';
+import AddCategorie from '../modals/addCategorie';
+import EditCategory from '../modals/editCategorie';
+import AddInsumo from '../modals/addInsumo';
+import EditInsumo from '../modals/editInsumo';
 
 // 🔥 REGRA CENTRAL: Proteção contra erro se category for undefined ou nulo
 const isInsumoCategory = (category) => {
